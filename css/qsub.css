@@ -1,0 +1,65 @@
+.text-blocked-label {
+ width: 220px;
+ display: block;
+ background-color: #EEEEFF;
+}
+.text-label {
+ background-color: #EEEEFF;
+}
+#cpu_time_input {
+ max-width: 8ch;
+}
+#memory_input {
+ max-width: 6ch;
+}
+#nbr_cpu_input {
+ max-width: 4ch;
+}
+#job_name_input,
+#log_name_input,
+#err_name_input,
+#email_add_input {
+ min-width: 350px;
+ max-width: 500px;
+}
+#commands_input {
+ min-width: 600px;
+ max-width: 650px;
+}
+.question{   
+ cursor: pointer;
+ display: inline-block;
+ width: 14px;
+ height: 14px;
+ background-color: #89A4CC;
+ line-height: 15px;
+ color: white;
+ font-size: 15px;
+ font-weight: bold;
+ border-radius: 8px;
+ text-align: center;
+ position: relative;
+}
+.question:hover {
+ background-color: #3D6199;
+ color:white;
+}
+.form-horizontal {
+ max-width: 800px;
+}
+.qsub-script {
+ margin-top:    5px;
+ margin-bottom: 5px;
+ font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+ background-color: #E0E0E7;
+ border:solid;
+ border-width: thin;
+ border-color: #C8C8C8;
+ font-size:  10px;
+ max-width: 800px;
+}
+.footer {
+ color: #A0A0B0;
+ text-align: center;
+ font-size:  6px;
+}
