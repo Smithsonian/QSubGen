@@ -1,0 +1,11 @@
+* cpu_time='' or memory='' -->
+* -e -o -N -> order?
+* cpu time or short/medium/long/unlimited
+* cpu_time: 3d 2h 20m
+* parse cpu_time and memory -> queue
+* need to move the limits, quotas and labels from the .js to the php
+  via some $('#properties').getAttribute('name-it')
+* could/should move the text/label/flags to an anscillary file
+* could add an explanation section and get the '?' links to point to the explanations
+* add code sniped to show list of hosts when MPI is selected
+* disable MPI when himem

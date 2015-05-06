@@ -1,0 +1,46 @@
+=:GNU compilers
+gcc/4.4.7            : GNU compilers 4.4.7
+gcc/4.9.1            : GNU compilers 4.9.1
+gcc/4.9.2            : GNU compilers 4.9.2
+=:GNU MPI modules
+gcc/mpich            : MPICH2 1.4.1p1 for GNU compilers 4.4.7, for TCP fabric
+gcc/mvapich          : MVAPICH2 2.0 for GNU compilers 4.4.7, IB fabric only
+gcc/openmpi          : OpenMPI 1.8.4 for GNU compilers 4.4.7, for IB fabric
+gcc/openmpi+tcp      : OpenMPI 1.8.4 for GNU compilers 4.4.7, for TCP fabric
+gcc/4.4/mpich        : MPICH2 1.4.1p1 for GNU compilers 4.4.7, for TCP fabric
+gcc/4.4/mvapich      : MVAPICH2 2.0 for GNU compilers 4.4.7, IB fabric only
+gcc/4.4/openmpi      : OpenMPI 1.8.4 for GNU compilers 4.4.7, for IB fabric
+gcc/4.4/openmpi+tcp  : OpenMPI 1.8.4 for GNU compilers 4.4.7, for TCP fabric
+gcc/4.9/mpich        : MPICH 3.1.4 for GNU compilers 4.9.1, IB or TCP fabric
+gcc/4.9/mvapich      : MVAPICH2 2.1.rc2 for GNU compilers 4.9.1, for IB fabric
+gcc/4.9/openmpi      : OpenMPI 1.8.4 for GNU compilers 4.9.1, for IB fabric
+gcc/4.9/openmpi+tcp-4.9.1: OpenMPI 1.8.4 for GNU compilers 4.9.1, for TCP fabric
+gcc/4.9/openmpi+tcp-4.9.2: OpenMPI 1.8.4 for GNU compilers 4.9.2, for TCP fabric
+gcc/4.9/openmpi-4.9.1: OpenMPI 1.8.4 for GNU compilers 4.9.1, for IB fabric
+gcc/4.9/openmpi-4.9.2: OpenMPI 1.8.4 for GNU compilers 4.9.2, for IB fabric
+=:Intel compilers
+intel/2015           : Intel compilers version 2015
+=:Intel MPI modules
+intel/15/mpi         : MPI for Intel compilers 2015 for IB fabric
+intel/15/mpi+tcp     : MPI for Intel compilers 2015 for TCP fabric
+intel/mpi            : MPI for Intel compilers 2015 for IB fabric
+intel/mpi+tcp        : MPI for Intel compilers 2015 for TCP fabric
+=:PGI compilers
+pgi/14.10            : PGI Compilers 14.10
+pgi/15.1             : PGI Compilers 15.1
+=:PGI MPI modules
+pgi/mpich            : MPICH 3.1.3 support for PGI compilers 15.1 for TCP fabric
+pgi/mvapich          : MVAPICH 2.0 support for PGI compilers 15.1 for IB fabric
+pgi/openmpi          : OpenMPI 1.8.4 support for PGI compilers 15.1 for TCP fabric
+pgi/14/mpich         : MPICH 3.0.4 support for PGI compilers 14.10 for TCP fabric
+pgi/14/mvapich       : MVAPICH 1.9 support for PGI compilers 14.10 for IB fabric
+pgi/14/openmpi       : OpenMPI 1.7.3 support for PGI compilers 14.10 for TCP fabric
+pgi/15/mpich         : MPICH 3.1.3 support for PGI compilers 15.1 for TCP fabric
+pgi/15/mvapich       : MVAPICH 2.0 support for PGI compilers 15.1 for IB fabric
+pgi/15/openmpi       : OpenMPI 1.8.4 support for PGI compilers 15.1 for TCP fabric
+=:IDL use -rt=<procedure.sav>
+idl/rt               : IDL 6.1
+=:BioGenetics (these are for illustration only for now)
+bio/Trinity: Trinity ver 1.2.3
+bio/bioperl: BioPerl ver 2.3.4
+bio/MrBayes: MrBayes ver 3.4.5
