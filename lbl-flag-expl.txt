@@ -1,0 +1,67 @@
+cpu_time ==> CPU time ==> -l s_cpu= ==>
+This is the amount of CPU time your job needs to complete, 
+you can enter a time (any time limit) or select a queue length;
+the format is MM or H:MM or HH:MM or D:HH:MM or DD:HH:MM.
+---
+memory ==> Memory ==> -l mres= ==>
+This is the amount of memory *per CPU* your job will use (hence need).
+
+The total amount of reserved memory will be  this amount MULTIPLIED by 
+the number of CPUs allocated.
+
+The cluster is a shared resource, memory is a limited and costly resource, 
+so do not set this value to more than you will use.
+Doing so will prevent access to that memory, hence other jobs from running!
+---
+pe ==> ==> -pe ==>
+PE: parallel environment:
+  * serial: 1 CPU/job;
+  * MPI: message passing interface, CPUs can be on different nodes:
+    orte and mpich are two flavors of MPI;
+  * multi-thread: shared memory model, all CPUs  must be on the same node.
+Note: high memory jobs PE can only be serial or multi-thread
+---
+nbr_cpu ==> Number of CPUs ==> -pe ==>
+This is the number of CPUs/threads or slots your job will use:
+  * MPI jobs can use a large number of CPUs, as they are distributed over nodes;
+  * Multi-threaded jobs are limited to 64 or 24 threads, since all the threads
+    need to be on the same node (low/high memory -> 64/24 CPUs).
+
+The allocated number of slots will stored in the variable $NSLOTS
+---
+shell ==> ==>  ==> 
+The choice of shell determines the syntax you use for your commands.
+---
+other ==> ==> ==> 
+These are optional parameters.
+---
+job_name ==> Job Name ==> -N ==>
+This is the name of your job, it can be any valid string
+---
+log_name ==> Log File Name ==> -o ==>
+This is the filename where the output of your script will go 
+make sure to use a unique filename for each concurrent job.
+
+If the file exists, the output will be appended to the existing file
+---
+err_name ==> Err File Name ==> -e ==> 
+This is the filename where the error messages of your script will go 
+make sure to use a unique filename for each concurrent job.
+
+If the file exists, the output will be appended to the existing file
+---
+email_add ==> Email ==> -M ==>
+The email address to send job status notifications
+---
+add_modules ==> Select which modules to add: ==> ==>
+Select from the list which modules your job will need.
+---
+job_commands ==> Job specific commands: ==> ==>
+Enter here the commands for your job, you must follow the syntax of the
+selected shell.
+---
+commands     ==> Type your commands here      ==>        ==> ---
+goto_cwd     ==> Change to cwd                ==> -cwd   ==> ---
+join_err     ==> Join stderr &amp; stdout     ==> -j y   ==> ---
+send_email   ==> Send email notifications     ==> -m abe ==> ---
+modules      ==> from this list               ==>        ==> 
