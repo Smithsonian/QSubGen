@@ -5,18 +5,18 @@
 // missing: 
 //   entering the job name could populate .log & .err
 //   -j y -> no '-e' 
-//   module
-//   validate(): OK?
 // built-in limits (max and quotas) need to move to .php
 // same for some strings (esp. in validation).
 //
 $(document).ready(function() {
-        $('#js_version_number').html('JS ver 0.99/1.1.1');
+        $(".modules_dropdown").select2({placeholder: 'select from the list, or start typing', 
+                    formatSelection: formatModuleSelection, 
+                    dropdownCssClass: 'smallmonodropdown'});
+        $('#js_version_number').html('JS ver 0.99/1.3');
         $('#save_file_button').prop('disabled', true);
         showMsg('This page is ready!');
     });
-// show a message in the #message label
-// very usefull for debugging
+// show a message in the #message label usefull for debugging
 function showMsg(text) {
     // compact js
     // document.getElementById('message').innerHTML = text;
@@ -33,27 +33,36 @@ function setAmount(ie) {
     var opt    = '';
     var petype = '';
     //
-    var pname = name+'_value';
-    //
-    if (name == 'memory') {
-        opt = flag+value+'G,h_data='+value+'G,h_vmem='+value+'G';
-        if (value > 6) {
-            opt += ',himem';
-        }
-    }
-    if (name == 'cpu_time') {
-        opt = flag+value;
-    }
     if (name == 'nbr_cpu') {
-        //
-        var n = $('input[name=pe]:checked').length;
-        if (n == 0) {
-            petype = '?type?';
-        } else {
-            petype = $('input[name=pe]:checked').val();
-        }
         pname = 'pe_type';
-        opt = flag+' '+petype+' '+value;
+    } else {
+        var pname = name+'_value';
+    }
+    //
+    if (value.length == 0) {
+        opt = '';
+    } else {
+        switch(name) {
+        case 'memory':
+            opt = flag+value+'G,h_data='+value+'G,h_vmem='+value+'G';
+            if (value > 6) {
+                opt += ',himem';
+            }
+            break;           
+        case 'cpu_time':
+            opt = flag+value;
+            break;
+        case 'nbr_cpu':
+            //
+            var n = $('input[name=pe]:checked').length;
+            if (n == 0) {
+                petype = '?type?';
+            } else {
+                petype = $('input[name=pe]:checked').val();
+            }
+            opt = flag+' '+petype+' '+value;
+            break;
+        }
     }
     setQsubParam(pname, opt); 
     // var info = id+' '+value+' '+name;
@@ -126,31 +135,44 @@ function setOther(ie, value, id) {
         }
     }
 }
+// add selected modules
+function addModule(name) {
+    //
+    var list = $( "#"+name+" option:selected" );
+    // showMsg('debug: addModule('+list.length+' "'+name+'")');
+    var str = '';
+    var i = 0;
+    for (i = 0; i < list.length; i++) {
+        str += 'module load '+$(list[i]).val()+'<br>';
+    }
+    //
+    var span_name = name+'_span';
+    $('#'+span_name).html(str);
+}
+// format which modules are selected with "formatSelection: formatModuleSelection" in $(name).select2(options)
+function formatModuleSelection (module) {
+    // delete text after ':', including preceeding ' '
+    return module.text.replace(/ *:.*/,''); 
+};
 // add #$ specification to qsub script
 function setQsubParam(name, value) {
     //
-    var content = "#$ " + value + "<br>";
-    // showMsg('debug: here("'+content+'")');
-    //
     var spanID = '#'+name;
-    var span = "<span id='"+name+"'>" + content + "</span>\n";
-    // showMsg('debug: "id='+name+'"');
-    // 
-    if (value.length == 0) {
-        // no value to put -> remove
-        $(spanID).remove();
-        // showMsg('debug: "removed"');
+    var content = '';
+    if (value.length != 0) {
+        content = "#$ " + value + "<br>";
+    }
+    //
+    if ($(spanID).length != 0) {
+        // replace content
+        $(spanID).html(content);
+        // showMsg('debug: id="'+name+'" -> html("'+content+'")');
     } else {
-        if ($(spanID).length != 0) {
-            // replace content
-            $(spanID).html(content);
-            // showMsg('debug: html("'+content+'")');
-        } else {
-            // insert content
-            var spanHolderID = '#qsub_params_span';
-            $(spanHolderID).append(span);
-            // showMsg('debug: append("'+content+'")');
-        }
+        // insert span w/ content
+        var spanHolderID = '#qsub_params_span';
+        var span = "<span id='"+name+"'>" + content + "</span>\n";
+        $(spanHolderID).append(span);
+        // showMsg('debug: "id='+spanHolderID+'".append(span="'+content+'")');
     }
 }
 //
@@ -162,9 +184,13 @@ function checkSetup() {
     // showMsg('checkSetup');
     var missing = 0;
     var invalid = 0;
+    var warning = 0;
+    var error   = 0;
+    // quotas/limits
     // this need to be adjusted accordingly
-    var ncpuMax   = 512;
+    var nCPUMax   = 512;
     var totMemMax = 512;
+    var hiMemLim  = 6;
     //
     var msg = '';
     var i, n, value, id, idx, stat, isValid, name, petype, totMem;
@@ -180,7 +206,8 @@ function checkSetup() {
         }
     } else {
         missing++;
-        msg += '  the type of PE has not been selected\n';
+        msg += '  ERR: the type of PE has not been selected\n';
+        petype = '';
     }
     //
     for (i = 0; i < list.length; i++) {
@@ -188,7 +215,7 @@ function checkSetup() {
         id = '#'+element+'_input';
         value = $(id).val();
         if (value == '') {
-            msg += '  "'+element+'" is missing\n';
+            msg += '  ERR: "'+element+'" is missing\n';
             missing++;
         } else {
             idx     = $(id).attr('id');
@@ -196,7 +223,7 @@ function checkSetup() {
             isValid = stat[0];
             name    = stat[1];
             if (isValid != 1) {
-                msg += '  "'+value+'" is invalid: '+name+'\n';
+                msg += '  ERR: "'+value+'" is invalid: '+name+'\n';
                 invalid++;
             }
         }
@@ -212,70 +239,109 @@ function checkSetup() {
         isValid = stat[0];
         name    = stat[1];
         if (isValid != 1) {
-            msg += '  "'+value+'" is invalid: '+name+'\n';
+            msg += '  ERR: "'+value+'" is invalid: '+name+'\n';
             invalid++;
         }
     }
     // 
-    if (missing > 0 || invalid > 0) {
-        if (missing > 0) {
-            var s = '';
-            if (missing > 1) { s = 's'; }
-            msg = missing+' required element'+s+' missing:\n'+msg
+    //  warnings
+    //
+    n = $('input[name=shell]:checked').length;
+    if (n == 0) {
+        warning++;
+        msg += '  WARN: You have not selected a shell, the default shell for qsub is csh.\n';
+    }
+    var commands = $('#commands_input').val();
+    if (commands.length == 0) {
+        warning++;
+        msg += '  WARN: You have not entered any job commands.\n';
+    }
+    var cpuTime = $('#cpu_time_input').val();
+    var memory  = $('#memory_input').val();
+    var nCPU    = 1;
+    if (petype != 'serial') {
+        nCPU = $('#nbr_cpu_input').val();
+    }
+    if (memory > hiMemLim) {
+        warning++;
+        msg += '  WARN: You have specified >'+hiMemLim+' GB of memory per CPU,\n'+
+               '        hence the job will run in the high-memory (himem) queue: fewer slots.\n';
+    }
+    error = missing+invalid;
+    //
+    // check quota
+    //
+    totMem = nCPU*memory;
+    if (nCPU > nCPUMax) {
+        error++;
+        msg += '  ERR: You have specified '+nCPU+' CPUs: this exceeds the per user quota of '+nCPUMax+'.\n';
+    }
+    if (totMem > totMemMax) {
+        error++;
+        msg += '  ERR: You have specified '+totMem+' GB of total memory: this exceeds the per user quota of '+totMemMax+' GB.\n';
+    }
+    //
+    // can't use him and MPI
+    //
+    if (petype.length != 0) {
+        if (memory > hiMemLim && !(petype == 'serial' || petype == 'mthread')) {
+            error++;
+            msg += '  ERR: You have requested '+memory+' GB of memory and PE="'+petype+'"\n'+
+                '       only "serial" or "multi-thread (mthread)" jobs can use the high memory (himem) queue.\n';
         }
-        if (invalid > 0) {
-            var s = '';
-            if (missing > 1) { s = 's'; }
-            msg = invalid+' invalid element'+s+':\n'+msg
-        }
-        alert(msg);
-        error = missing+invalid;
+    }
+    // display errs/warns
+    //
+    var nl = ':\n';
+    if (warning > 0) {
+        var s = '';
+        if (warning > 1) { s = 's'; }
+        msg = warning+' warning'+s+nl+msg;
+        nl =', ';
+    }
+    if (missing > 0) {
+        var s = '';
+        if (missing > 1) { s = 's'; }
+        msg = missing+' required element'+s+' missing'+nl+msg;
+        nl = ', ';
+    }
+    if (invalid > 0) {
+        var s = '';
+        if (missing > 1) { s = 's'; }
+        msg = invalid+' invalid element'+s+nl+msg;
+    }
+    var nxerr = error - missing+invalid;
+    if (nxerr > 0) {
+        s = '';
+        if (nxerr > 1) { s = 's'; }
+        msg = nxerr+' error'+s+nl+msg;
+    }
+
+    //
+    if (error > 0) {
         var s = '';
         if (error > 1) { s = 's'; }
-        showMsg('You have '+error+' error'+s+'!');
-        $('#save_file_button').prop('disabled', true);
-    } else {
-        warning = 0;
-        //  warnings
-        n = $('input[name=shell]:checked').length;
-        if (n == 0) {
-            warning++;
-            msg += '  You have not selected a shell, the default shell for qsub is csh.\n';
-        }
-        var commands = $('#commands_input').val();
-        if (commands.length == 0) {
-            warning++;
-            msg += '  You have not entered any job commands.\n';
-        }
-        var cpuTime = $('#cpu_time_input').val();
-        var memory  = $('#memory_input').val();
-        var ncpu    = 1;
-        if (petype != 'serial') {
-            ncpu = $('#nbr_cpu_input').val();
-        }
-        if (memory > 6) {
-            warning++;
-            msg += '  You have specified >6 GB of memory per CPU,\n'+
-                   '  hence the job will run in the high-memory queue (fewer slots).\n';
-        }
-        totMem = ncpu*memory;
-        // check quota
-        if (ncpu > ncpuMax) {
-            warning++;
-            msg += '  You have specified >'+ncpuMax+' CPU: this exceeds the per user quota.\n';
-        }
-        if (totMem > totMemMax) {
-            warning++;
-            msg += '  You have specified >'+totMemMax+' GB of total memory: this exceeds the per user quota.\n';
-        }
+        var txt = 'You have '+error+' error'+s;
         if (warning > 0) {
-            var s = '';
+            s = '';
             if (warning > 1) { s = 's'; }
-            msg = warning+' warning'+s+':\n'+msg
+            txt += ' and '+warning+' warning'+s;
+        }
+        showMsg(txt+', fix and check again!');
+        $('#save_file_button').prop('disabled', true);
+        alert(msg);
+    } else {
+        var txt = 'Your job will request '+nCPU+' CPUs for T='+cpuTime+' and a total of '+totMem+' GB of memory';
+        if (memory > hiMemLim) {
+            txt += ' and the high-memory queue.';
+        } else {
+            txt += '.';
+        }
+        showMsg(txt);
+        $('#save_file_button').prop('disabled', false);
+        if (warning > 0) {
             alert(msg);
         }
-        showMsg('Your job will request '+ncpu+' CPUs for T='+cpuTime+' and a total of '+totMem+' GB of memory.');
-        $('#save_file_button').prop('disabled', false);
     }
 }
 //

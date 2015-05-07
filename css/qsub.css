@@ -47,6 +47,14 @@
 .form-horizontal {
  max-width: 800px;
 }
+.modules_dropdown { width: 770px !important; }
+/*
+  http://stackoverflow.com/questions/14824676/how-do-i-change-select2-box-height
+*/
+.smallmonodropdown .select2-results {
+    font-family: Monaco,Menlo,Consolas,"Courier New",monospace; 
+    font-size: 8px; 
+}
 .qsub-script {
  margin-top:    5px;
  margin-bottom: 5px;
