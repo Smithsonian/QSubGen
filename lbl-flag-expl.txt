@@ -1,31 +1,32 @@
 cpu_time ==> CPU time ==> -l s_cpu= ==>
-This is the amount of CPU time your job needs to complete, 
-you can enter a time (any time limit) or select a queue length;
-the format is MM or H:MM or HH:MM or D:HH:MM or DD:HH:MM.
+This is the amount of CPU time your job needs to complete:<br> 
+&bull; you can enter a time (any time limit) or <br>
+&bull; select a queue length.<br>
+The format is <tt>MM</tt> or <tt>H:MM</tt> or <tt>HH:MM</tt> or <tt>D:HH:MM</tt> or <tt>DD:HH:MM</tt>.
 ---
 memory ==> Memory ==> -l mres= ==>
-This is the amount of memory *per CPU* your job will use (hence need).
+This is the amount of memory <b>per CPU</b> your job will use (hence need).<p>
 
-The total amount of reserved memory will be  this amount MULTIPLIED by 
-the number of CPUs allocated.
-
-The cluster is a shared resource, memory is a limited and costly resource, 
+The total amount of reserved memory will be  this amount <b>multiplied</b> by 
+the number of CPUs allocated.<p>
+<blockquote>
+The cluster is a shared resource, and memory is a limited and costly resource, 
 so do not set this value to more than you will use.
-Doing so will prevent access to that memory, hence other jobs from running!
+Doing so will prevent access to that memory, hence other jobs from running!</blockquote>
 ---
 pe ==> ==> -pe ==>
-PE: parallel environment:
-  * serial: 1 CPU/job;
-  * MPI: message passing interface, CPUs can be on different nodes:
-    orte and mpich are two flavors of MPI;
-  * multi-thread: shared memory model, all CPUs  must be on the same node.
-Note: high memory jobs PE can only be serial or multi-thread
+PE: parallel environment:<br>
+ &bull; serial: 1 CPU/job; <br>
+ &bull; MPI: message passing interface, CPUs can be on different nodes: <br>
+ &nbsp; &nbsp; <tt>orte</tt> and <tt>mpich</tt> are two flavors of MPI; <br>
+ &bull; multi-thread: shared memory model, all CPUs  must be on the same node. <p>
+Note: high memory jobs PE can only be serial or multi-thread.
 ---
 nbr_cpu ==> Number of CPUs ==> -pe ==>
-This is the number of CPUs/threads or slots your job will use:
-  * MPI jobs can use a large number of CPUs, as they are distributed over nodes;
-  * Multi-threaded jobs are limited to 64 or 24 threads, since all the threads
-    need to be on the same node (low/high memory -> 64/24 CPUs).
+This is the number of CPUs/threads or slots your job will use: <br>
+ &bull; MPI jobs can use a large number of CPUs, as they are distributed over nodes; <br>
+ &bull; Multi-threaded jobs are limited to 64 or 24 threads, since all the threads
+    need to be on the same node (low/high memory -> 64/24 CPUs). <p>
 
 The allocated number of slots will stored in the variable $NSLOTS
 ---
@@ -36,22 +37,22 @@ other ==> ==> ==>
 These are optional parameters.
 ---
 job_name ==> Job Name ==> -N ==>
-This is the name of your job, it can be any valid string
+This is the name of your job, it can be any valid string.
 ---
 log_name ==> Log File Name ==> -o ==>
 This is the filename where the output of your script will go 
-make sure to use a unique filename for each concurrent job.
+make sure to use a unique filename for each concurrent job.<p>
 
-If the file exists, the output will be appended to the existing file
+If the file exists, the output will be appended to the existing file.
 ---
 err_name ==> Err File Name ==> -e ==> 
 This is the filename where the error messages of your script will go 
-make sure to use a unique filename for each concurrent job.
+make sure to use a unique filename for each concurrent job.<p>
 
-If the file exists, the output will be appended to the existing file
+If the file exists, the output will be appended to the existing file.
 ---
 email_add ==> Email ==> -M ==>
-The email address to send job status notifications
+The email address to send job status notifications.
 ---
 add_modules ==> Select which modules to add: ==> ==>
 Select from the list which modules your job will need.

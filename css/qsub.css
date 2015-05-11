@@ -1,5 +1,6 @@
 .text-blocked-label {
- width: 220px;
+ width: 30ex;
+ height: 1.25em;
  display: block;
  background-color: #EEEEFF;
 }
@@ -26,6 +27,7 @@
  min-width: 600px;
  max-width: 650px;
 }
+/* cursor: url(list_help.png),pointer; */
 .question{   
  cursor: pointer;
  display: inline-block;
@@ -43,6 +45,23 @@
 .question:hover {
  background-color: #3D6199;
  color:white;
+}
+
+.tooltip {
+ display: none;
+ position: relative;
+ border: 1px solid blue;
+ border-radius: 4px;
+ font-size: 16px;
+ padding:   2px;
+ top:       2px;
+ left:    200px;
+ width:   580px;
+ z-index: 1;
+ background-color: #EEEEFF;
+}
+.hover:hover .tooltip {
+ display: inline-block;
 }
 .form-horizontal {
  max-width: 800px;
