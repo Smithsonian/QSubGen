@@ -28,3 +28,8 @@ Status:
 0.99/1.4b
   fixed CDN for select2 v3.5.2
   should upgrade to select 4.x eventually.
+
+0.99/1.5
+  changed the way help messages are shown: 
+  no anchor. no title, but .tooltip via css
+  also, moved code to addToolTip()

@@ -7,14 +7,14 @@
    * to submit a job to SGE on hydra (R.6)
    *
    *
-   * <- Last updated: Mon May 11 12:09:21 2015 -> SGK
+   * <- Last updated: Mon May 11 13:28:26 2015 -> SGK
    **/
 error_reporting(E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 #
-$verNo = '0.99/1.4b';
+$verNo = '0.99/1.5';
 # get the labels, flags and explanations from one external file
 #   ---\n is entry separator
 #   ==> is labels, flags and explanations separator
@@ -142,8 +142,9 @@ function main(){
 # group header
 function H($legend, $name, $hint) {
   echo "<fieldset>
-<legend class='text-label'>$legend
-<a href='#' class='question' title='$hint'>?</a> </legend>\n";
+<legend class='text-blocked-label'>$legend\n";
+  addToolTip($hint);
+  echo "</legend>\n";
 }
 # radio group input element
 function RG ($rg, $name, $cmd, $opt, $ickd) {
@@ -185,8 +186,9 @@ function TI($name, $default_value) {
   $flag  = $Flags[$name];
   #
   echo "<tr><td>
-<label for='$name' class='text-blocked-label' title='$name'>$label 
-<a href='#' class='question' title='$hint'>?</a> </label>";
+<label for='$name' class='text-blocked-label'>$label";
+  addToolTip($hint);
+  echo "</label>";
   echo "</td>\n<td>";
   echo "<input type='text' class='form-control' id='".$name."_input' ".
     "placeholder='$default_value' data-pname='".$name."_value' \n".
@@ -202,7 +204,7 @@ function TA($name, $default_value) {
   # $hint  = $Explanations[$name];
   # $flag  = $Flags[$name];
   #
-  echo "<tr><td><label for='$name' class='label' title='$name'>$label </label></td>\n";
+  echo "<tr><td><label for='$name' class='label'>$label </label></td>\n";
   echo "<td><textarea class='form-control' id='".$name."_input' ".
     "placeholder='$default_value' \n".
     "data-pname='".$name."_value' ".
@@ -247,10 +249,9 @@ function SA($name, $default_value, $txt, $initVal) {
   $hint  = $Explanations[$name];
   $flag  = $Flags[$name];
   #
-  echo "<tr><td><label class='text-blocked-label'>$label \n".
-    '<a href="#" class="question" '
-    .'title="'.$hint.' ">?</a> </label></td>
-';
+  echo "<tr><td><label class='text-blocked-label'>$label \n";
+  addToolTip($hint);
+  echo"</label></td>\n";
   if ($initVal == 'xxx') {
     $val = ' disabled ';
   } else {
@@ -307,5 +308,13 @@ echo = `date` job \$JOB_NAME done<br>
 </div>";
   return $div;    
 }
-
+function addToolTip($hint) {
+  echo ' <span class="hover">
+  <div class="question">?</div>
+   <div class="tooltip">
+';
+  echo $hint;
+  echo '
+    </div></span>';
+}
 ?>
