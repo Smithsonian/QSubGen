@@ -25,3 +25,6 @@ Status:
   quotaValues() function is trivial
   added code sniped to show list of hosts in job script when selecting MPI
 
+0.99/1.4b
+  fixed CDN for select2 v3.5.2
+  should upgrade to select 4.x eventually.
