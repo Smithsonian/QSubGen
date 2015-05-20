@@ -6,7 +6,7 @@ $(document).ready(function() {
         $(".modules_dropdown").select2({placeholder: 'select from the list, or start typing', 
                     formatSelection: formatModuleSelection, 
                     dropdownCssClass: 'smallmonodropdown'});
-        $('#js_version_number').html('JS ver 0.99/1.4');
+        $('#js_version_number').html('JS ver 0.99/1.6');
         $('#save_file_button').prop('disabled', true);
         showMsg('This page is ready!');
     });
@@ -19,36 +19,63 @@ function showMsg(text) {
     $("#message").html(text);
 }
 //
-function memThr()        { return   1; } // threshold above which need to reserve memory
-function hiMemThr()      { return   6; } //                 which need the hiMem queue
-function whichQMem() {
-    //
-    // which queue type hC or hM
-    //
-    var memory  = $('#memory_input').val();
-    var opt = '';
-    if (memory > hiMemThr()) {
-        opt = 'hM';
-    } else {
-        opt += 'hC';
+function getQOpt(name) {
+    var list = $( "#qOpt input" );
+    var i = 0;
+    value = -1;
+    for (i = 0; i < list.length; i++) {
+        if (name == $(list[i]).attr('name')) {
+            value = parseInt($(list[i]).val());
+            break;
+        }
     }
-    return opt;
+    // console.log('qOpt("'+name+'")='+value);
+    return value;
 }
+// mem:xxThr =   1
+// mem:hiThr =   6
+//
+// nCPU:maxXX = 768
+// nCPU:maxhC =  64
+// nCPU:maxhM =  80
+// 
+// nCPU:?Th? =
+// mem:?Th? =
+//
+function xxMemThr()  { return getQOpt('mem:xxThr');}     // threshold above which need to reserve memory
+function hiMemThr()  { return getQOpt('mem:hiThr'); }    //                 which need the hiMem queue
+function maxCPU(str) { return getQOpt('nCPU:max'+str); } // max of CPU for MPI/mthread
+//
+function getQLen(name) {
+    // get the time associated to the qLen options
+    var list = $( "#qLen option" );
+    var i = 0;
+    var value = '???';
+    for (i = 0; i < list.length; i++) {
+        if (name == $(list[i]).text()) {
+            value = $(list[i]).val();
+            break;
+        }
+    }
+    // console.log('qLen("'+name+'")='+value);
+    return value;
+}
+function shortQLen()  { return cvtDHM2Time(getQLen('short'));}
+function mediumQLen() { return cvtDHM2Time(getQLen('medium'));}
+function longQLen()   { return cvtDHM2Time(getQLen('long'));}
+//
 function maxCPUPerNode() { 
     //
     // max number of CPUs per nodes: depends on queue (hiC vs hiM) 
     //
-    if (whichQMem() == 'hM') {
-        return 24;
-    } else {
-        return 64; 
-    }
+    return maxCPU(whichQMem());
 }
+//
 function maxCPUPerJob()  { 
     //
-    // max number of CPUs in a single job: depends on PE and queue (hiC vs hiM) via maxCPUPerNode()
+    // max number of CPUs in a single job
     //
-    var nMax = 768; // arbitray, in fact the quota are the real limits
+    var nMax = maxCPU('XX');
     var n = $('input[name=pe]:checked').length;
     if (n == 1) {
         var petype = $('input[name=pe]:checked').val();
@@ -58,16 +85,73 @@ function maxCPUPerJob()  {
     }
     return nMax; 
 } 
-
+//
+function whichQMem() {
+    //
+    // which queue type hC or hM
+    //
+    var memory  = $('#memory_input').val();
+    var opt = '';
+    if (memory > hiMemThr()) {
+        opt = 'hM';
+    } else {
+        opt = 'hC';
+    }
+    return opt;
+}
+//
+function whichQLen() {
+    //
+    // which queue length: sT mT lT uT or ?T
+    //
+    var list = $( "#qLen option:selected" );
+    var qTime = list.val();
+    //
+    var val = '';
+    if (qTime == '') {
+        var time = $('#cpu_time_input').val();
+        // convert time to length
+        var t  = cvtDHM2Time(time);
+        var ts = shortQLen();
+        var tm = mediumQLen();
+        var tl = longQLen();
+        var l = 's';
+        if (t > ts) {
+            l = 'm';
+        }
+        if (t > tm) {
+            l = 'l';
+        }
+        if (t > tl || t <= 0) {
+            l = 'u';
+        }
+        val = l+'T';
+    } else {
+        var letter = list.text().split('');
+        val = letter[0]+'T';
+    }
+    //
+    // showMsg('debug: whichQLen("'+qTime+'") -> '+val);
+    return val;
+}
 function quotaValues(type)  { 
     // actual quotas, need to be set right
+    var qLen = whichQLen();
+    var qMem = whichQMem();
+    var q = qLen+qMem;
+    //
+    var val = -1;
     switch(type) {
     case 'nCPU':
-        return 512; 
+        val = getQOpt('nCPU:'+q);
+        break;
     case 'memory':
-        return 512;
+        val = getQOpt('mem:'+q);
+        break;
     }
-    return -1;
+    // showMsg('debug: quotaValues("'+type+':'+q+'") -> '+val);
+    // console.log('debug: quotaValues("'+type+':'+q+'") -> '+val);
+    return val;
 }
 //
 // call back for SA()
@@ -91,9 +175,8 @@ function setAmount(ie) {
         switch(name) {
         case 'memory':
             opt = flag+value+'G';
-            if (value > memThr()){
-                opt += ',mem_free='+value+
-                    'G,h_data='+value+
+            if (value > xxMemThr()){
+                opt += ',h_data='+value+
                     'G,h_vmem='+value+'G';
             }
             if (value > hiMemThr()) {
@@ -104,9 +187,13 @@ function setAmount(ie) {
             break;           
         case 'cpu_time':
             if (value == '-') {
-                opt = '-q uT'+whichQMem()+' -l lowpri';
+                opt = '-q uT'+whichQMem()+'.q -l lowpri';
             } else {
-                opt = flag+value+':00';
+                var qMem = whichQMem();
+                if (qMem == 'hM') {
+                    opt = '-q '+whichQLen()+qMem+'.q ';
+                }
+                opt += flag+value+':00';
             }
             break;
         case 'nbr_cpu':
@@ -157,7 +244,7 @@ function addQsubParam(ie) {
         $('#log_name_input').keyup();
         //
         var isChecked = $('#join_err').is(':checked');
-        showMsg('debug: *** '+isChecked);
+        // showMsg('debug: *** '+isChecked);
         if (! isChecked) {
             $('#err_name_input').val(verr);
             $('#err_name_input').keyup();
@@ -195,16 +282,17 @@ function setPE(value, opt) {
     } else {
         setQsubParam('pe_type', '-pe '+opt+ ' '+nCPU); 
         $('#nbr_cpu_input').prop('disabled', false);
-        var info = 'echo with NSLOTS = $NSLOTS';
+        var info = 'echo + NSLOTS = $NSLOTS';
         switch(opt) {
         case 'orte':
-            info += ' on:<BR>cat $PE_HOSTFILE<BR>';
+            info += ' distributed over:<BR>cat $PE_HOSTFILE<BR>';
             break;
         case 'mpich':
-            info += ' on:<BR>sort $TMPDIR/machines | uniq -c<BR>';
+            info += ' distributed over:<BR>sort $TMPDIR/machines | uniq -c<BR>';
             break;
         case 'mthread':
             info += '<BR>';
+            break;
         }
         $('#parallel_info_params_span').html(info);
     }
@@ -226,20 +314,14 @@ function setOther(ie, value, id) {
     //
     if (id == 'join_err') {
         $('#err_name_input').prop('disabled', ie.checked);
+        if (ie.checked) {
+            setQsubParam('err_name_value', ''); 
+        } else {
+            $('#err_name_input').keyup();
+        }
     }
 }
 //
-//function setCPUTime (qLen, qTime) {
-//    //
-//    // showMsg('debug: setCPUTime("'+qLen+'","'+qTime+'")');
-//    $('#cpu_time_input').val(qTime);
-//    $('#cpu_time_input').keyup();
-//    if (qTime == '') {
-//        $('#cpu_time_input').prop('disabled', false);
-//    } else {
-//        $('#cpu_time_input').prop('disabled', true);
-//    }
-//}
 // setQLen(this.id)
 function setQLen(name) {
     //    
@@ -253,10 +335,10 @@ function setQLen(name) {
     } else {
         $('#cpu_time_input').val(qTime);
         $('#cpu_time_input').prop('disabled', true);
-        var letter = list.text().split('');
-        var memory  = $('#memory_input').val();
-        var opt = '-q '+letter[0]+'T'+whichQMem();
-        if (letter[0] == 'u') {
+        var qLen = whichQLen();
+        var qMem = whichQMem();
+        var opt = '-q '+qLen+qMem+'.q';
+        if (qLen == 'uT') {
             opt += ' -l lowpri';
         }
         var pname = 'cpu_time_value';
@@ -314,9 +396,7 @@ function checkSetup() {
     var invalid = 0;
     var warning = 0;
     var error   = 0;
-    // quotas/limits
-    var nCPUMax   = quotaValues('nCPU');
-    var totMemMax = quotaValues('memory');
+    //
     var hiMemLim  = hiMemThr();
     //
     var msg = '';
@@ -384,28 +464,36 @@ function checkSetup() {
         msg += '  WARN: You have not entered any job commands.\n';
     }
     var cpuTime = $('#cpu_time_input').val();
-    var memory  = $('#memory_input').val();
+    var memory  = parseInt($('#memory_input').val());
     var nCPU    = 1;
     if (petype != 'serial') {
-        nCPU = $('#nbr_cpu_input').val();
+        nCPU = parseInt($('#nbr_cpu_input').val());
     }
     if (memory > hiMemLim) {
         warning++;
         msg += '  WARN: You have specified >'+hiMemLim+' GB of memory per CPU,\n'+
-               '        hence the job will run in the high-memory (himem) queue: fewer slots.\n';
+               '        hence the job will run in the high-memory queue: fewer slots.\n';
     }
     error = missing+invalid;
     //
     // check quota: nCPU > nCPUMax and totMem > totMemMax
     //
+    // quotas/limits
+    var nCPUMax   = quotaValues('nCPU');
+    var totMemMax = quotaValues('memory');
+    var qName = whichQLen()+whichQMem()+'.q';
+    //
     totMem = nCPU*memory;
+    //
     if (nCPU > nCPUMax) {
         error++;
-        msg += '  ERR: You have specified '+nCPU+' CPUs: this exceeds the per user quota of '+nCPUMax+'.\n';
+        msg += '  ERR: You have specified '+nCPU+
+            ' CPUs: this exceeds the per user quota of '+nCPUMax+' CPUs in "'+qName+'".\n';
     }
     if (totMem > totMemMax) {
         error++;
-        msg += '  ERR: You have specified '+totMem+' GB of total memory: this exceeds the per user quota of '+totMemMax+' GB.\n';
+        msg += '  ERR: You have specified '+totMem+
+            ' GB of total memory: this exceeds the per user quota of '+totMemMax+' GB in "'+qName+'".\n';
     }
     //
     // can't use him and MPI
@@ -484,6 +572,7 @@ function checkSetup() {
         txt = 'Your job will request '+nCPU+
             ' CPU'+s+', '+cpuTimeX+' of CPU time'+
             and+' a total of '+totMem+'GB of memory'+txt;
+        //****
         showMsg(txt);
         $('#save_file_button').prop('disabled', false);
         if (warning > 0) {
@@ -503,6 +592,20 @@ function download() {
     window.open("data:plain/text;charset=utf-8," + escape(output));
     // disable the save button to force a check
     $('#save_file_button').prop('disabled', true);
+}
+//
+function cvtDHM2Time(str) {
+    var t = 0;
+    var w = str.split(':');
+    i = w.length-1;
+    t += parseInt(w[i]);
+    if (i == 0) {return t;}
+    i--;
+    t += parseInt(w[i])*60.;
+    if (i == 0) {return t;}
+    i--;
+    t += parseInt(w[i])*60*24;
+    return t;
 }
 //
 // validate a field (ie: input element), calls doValidate()
@@ -551,7 +654,7 @@ function doValidate(idname, value) {
             isValid = isValidName(value);
             break;
         case 'cpu_time_input':
-            name = 'amount of cpu time ([d]d:hh:mm, [h]h:mm, or mm)';
+            name = 'amount of cpu time ([d]d:hh:mm, [h]h:mm, mmm or mm)';
             isValid = isValidCPUTime(value);
             break;
         case 'memory_input':
@@ -559,7 +662,7 @@ function doValidate(idname, value) {
             isValid = isValidFloat(value, 1.0, 1024.0);
             break;
         case 'nbr_cpu_input':
-            // max #(CPU) depends on PE mode
+            // max #(CPU) depends on PE mode and hC vs hM
             var nMax = maxCPUPerJob();
             name = 'number of CPUs [btwn 2 & '+nMax+']';
             isValid = isValidInteger(value, 2, nMax);
@@ -572,6 +675,7 @@ function doValidate(idname, value) {
             name = 'commands';
             // no validation
             isValid = 1;
+            break;
         }
     }
     //
@@ -579,13 +683,29 @@ function doValidate(idname, value) {
 }
 //
 function isValidCPUTime(value) {
-    // allow '12' '1:00' '12:00' '1:00:00' or '12:00:00'
+    // allow '12' '123' '1:00' '12:00' '1:00:00' or '12:00:00'
+    // This may not reject some weird time formats
+    //
     var stat = 0;
-    var re3 = /^[0-9]{1,2}:[0-9]{2}:[0-9]{2}$/;
-    var re2 = /[0-9]{1,2}:[0-9]{2}$/;
-    var re1 = /^[0-9]{2}$/;
-    if (re1.test(value) || re2.test(value) || re3.test(value) || value == '-') {
+    //
+    var re1 = /^[1-2][0-9]:[0-2][0-9]:[0-5][0-9]$/; // xx:xx:xx max 29:23:59 or ~30 days >> 30:00:00 of long
+    var re2 =      /^[1-9]:[0-2][0-9]:[0-5][0-9]$/; //  x:xx:xx max  9:23:59 or  ~10 days
+    var re3 =            /^[1-9][0-9]:[0-5][0-9]$/; //    xx:xx max    99:59 or ~100 hrs
+    var re4 =                 /^[1-9]:[0-5][0-9]$/; //     x:xx max     9:59 or  ~10 hrs
+    var re5 =                       /^[1-9][0-9]{1,2}$/; //  xx or xxx  min is 10, max 999 minutes  
+    //
+    if (re1.test(value) || 
+        re2.test(value) || 
+        re3.test(value) || 
+        re4.test(value) || 
+        re5.test(value) || 
+        value == '-') {
         stat = 1;
+    }
+    // reject x:2[4-9]:xx & xx:2[4-9]:xx
+    var re0 = /^.{1,2}:2[4-9]:..$/;
+    if (re0.test(value)) {
+        stat = 0;
     }
     return stat;
 }

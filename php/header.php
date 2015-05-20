@@ -1,6 +1,6 @@
 <?php
 #
-# <- Last updated: Mon May 11 12:07:46 2015 -> SGK
+# <- Last updated: Tue May 19 10:57:04 2015 -> SGK
 #
 $s2VerNo = '3.5.2';
 echo '<!DOCTYPE html>
@@ -11,10 +11,17 @@ echo '<!DOCTYPE html>
 # https://select2.github.io/
 # select2 from CDN or local?
 if ($s2VerNo != '') {
-  $cdn = 'https://cdn.cdnhttps.com/cdn-libraries/select2/'.$s2VerNo;
+#
+#  $cdn = 'https://cdn.cdnhttps.com/cdn-libraries/select2/'.$s2VerNo;
+#  echo '
+#  <link href="'.$cdn.'/select2.min.css" rel="stylesheet" />
+#  <script src="'.$cdn.'/select2.min.js"></script>';
+#
+  $cdn = 'https://cdn.jsdelivr.net/select2/'.$s2VerNo;
   echo '
-  <link href="'.$cdn.'/select2.min.css" rel="stylesheet" />
-  <script src="'.$cdn.'/select2.min.js"></script>';
+<link rel="stylesheet" href="'.$cdn.'/select2-bootstrap.css">
+<link rel="stylesheet" href="'.$cdn.'/select2.css">
+<script src="'.$cdn.'/select2.min.js"></script>';
 } else {
   echo '
   <link href="select2/select2.css" rel="stylesheet">

@@ -1,8 +1,13 @@
 cpu_time ==> CPU time ==> -l s_cpu= ==>
 This is the amount of CPU time your job needs to complete:<br> 
 &bull; you can enter a time (any time limit) or <br>
-&bull; select a queue length.<br>
-The format is <tt>MM</tt> or <tt>H:MM</tt> or <tt>HH:MM</tt> or <tt>D:HH:MM</tt> or <tt>DD:HH:MM</tt>.
+&bull; select a queue length (form the pull down menu).<p>
+The format is <tt>MM</tt>, <tt>MMM</tt>, <tt>H:MM</tt>, <tt>HH:MM</tt>,
+<tt>D:HH:MM</tt> or <tt>DD:HH:MM</tt>. <p>
+Hence the minimum is 10 minutes, while the maximum is set to 29:23:59 (almost
+30 days, <tt>lT</tt> queues). <p>
+A value of "-" will direct the job to the unlimited queues: no time limit, but
+fewer slots.
 ---
 memory ==> Memory ==> -l mres= ==>
 This is the amount of memory <b>per CPU</b> your job will use (hence need).<p>
@@ -19,16 +24,20 @@ PE: parallel environment:<br>
  &bull; serial: 1 CPU/job; <br>
  &bull; MPI: message passing interface, CPUs can be on different nodes: <br>
  &nbsp; &nbsp; <tt>orte</tt> and <tt>mpich</tt> are two flavors of MPI; <br>
- &bull; multi-thread: shared memory model, all CPUs  must be on the same node. <p>
-Note: high memory jobs PE can only be serial or multi-thread.
+ &bull; multi-thread: shared memory model, all CPUs  must be on the same node
+ (aka <tt>openmp</tt>). <p>
+<b>NOTE</b>: for high memory jobs the PE can only be "serial" or "multi-thread".
 ---
 nbr_cpu ==> Number of CPUs ==> -pe ==>
-This is the number of CPUs/threads or slots your job will use: <br>
+This is the number of CPUs/threads or "slots" your job will use: <br>
  &bull; MPI jobs can use a large number of CPUs, as they are distributed over nodes; <br>
- &bull; Multi-threaded jobs are limited to 64 or 24 threads, since all the threads
-    need to be on the same node (low/high memory -> 64/24 CPUs). <p>
-
-The allocated number of slots will stored in the variable $NSLOTS
+ &bull; Multi-threaded jobs are limited to 64 or 40 threads, since all the threads
+    need to be on the same node. <p>
+The allocated number of slots will stored in the variable NSLOTS.
+<p>
+The compute nodes in the hi-cpu queues have up to 64 cores, the compute nodes
+in the hi-memory queues have 24, 64 or 80 cores (two, twelve, and two nodes
+respectively; with 512GB, 512GB and 1TB of total memory respectively).
 ---
 shell ==> ==>  ==> 
 The choice of shell determines the syntax you use for your commands.
