@@ -1,7 +1,7 @@
 A qsub script generation utility for use on the Smithsonian Institution High
 Performance Cluster. 
 
-This is ver 0.99/1.4 as we develop the code
+This is ver 0.99/x.x as we develop the code
 
 Status:
 
@@ -33,3 +33,13 @@ Status:
   changed the way help messages are shown: 
   no anchor. no title, but .tooltip via css
   also, moved code to addToolTip()
+
+0.99/1.6
+  implemented quotas/limits: the .php reads from the file quotas.txt and
+    the values go into hidden input params.
+  fixed join stdout & stderr ("-j y") to toggle "#$ -e <name>"
+  added -q xThM.q, but only for hi-mem jobs
+  removed mem_free=xxG (no suitable queue)
+  changed some of the popup help text
+  improved the cpu time validation 999 to 29:23:59 (00:00:00, 2:65, ... are now invalid)
+

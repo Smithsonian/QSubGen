@@ -1,6 +1,8 @@
-* could move the limits, quotas and labels from the .js to the php
-  via some $('#properties').getAttribute('name-it')
-  right now in functions
-* need a better quotaValues() function
-* check validate() streamline/improve
-* could add an explanation section and get the '?' links to point to the explanations
+May 20 2015 
+
+* could add 
+  * more flexible time formats
+  * an explanation section and get the '?' links to point to the explanations
+  * license option
+
+* fall back if CDN fails?, or just add the stuff 

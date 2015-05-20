@@ -7,14 +7,14 @@
    * to submit a job to SGE on hydra (R.6)
    *
    *
-   * <- Last updated: Mon May 11 13:28:26 2015 -> SGK
+   * <- Last updated: Wed May 20 11:53:33 2015 -> SGK
    **/
 error_reporting(E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 #
-$verNo = '0.99/1.5';
+$verNo = '0.99/1.6';
 # get the labels, flags and explanations from one external file
 #   ---\n is entry separator
 #   ==> is labels, flags and explanations separator
@@ -43,28 +43,35 @@ for ($i = 0; $i < count($list); $i++) {
 #  =:text --> <optgroup label='text'>
 #  module : description
 $modules = explode("\n", file_get_contents('./module-avail.txt', true));
+$qOpts = explode("\n", file_get_contents('./quotas.txt', true));
 $qLens = explode(';', 'short=7:00;medium=1:12:00;long=30:00:00;unlimited=-;any=');
-# $qLens = explode(';', 'short=7:00;med=1:12:00;long=30:00:00;unl=-;any-T=');
-
+#
 main();
 #
 # ---------------------------------------------------------------------------
-# main()
+#
 function main(){
   #
   global $verNo;
   global $Explanations, $Flags, $Labels;
-  global $modules, $qLens;
+  global $modules, $qOpts, $qLens;
   #
-  echo "<form autocomplete='off' class='form-horizontal' role='form'>
-";
+  echo "<form autocomplete='off' class='form-horizontal' role='form'>\n";
   #
-  echo "<fieldset>
-<legend class='text-label'>Specify the amount of: </legend>
-";
-  echo "<table>
-";
-  $or = " or ".
+  echo "<span id='qOpt' style='display: none'>\n";
+  for ($i = 0; $i < count($qOpts)-1; $i++) {
+    if (! preg_match('=^//=',$qOpts[$i])) {
+      $w = explode('=', $qOpts[$i]);
+      $t = trim($w[0]);
+      $v = trim($w[1]);
+      echo "<input type='hidden' name='$t' value='$v'>\n";
+    }
+  }
+  echo "</span>\n";
+  #
+  echo "<fieldset>\n<legend class='text-label'>Specify the amount of: </legend>\n";
+  echo "<table>\n";
+  $or = " or \n".
   "<select id='qLen' class='qLen_dropdown' onChange='setQLen(this.id)' onSelect='setQLen(this.id)'>\n";
   for ($i = 0; $i < count($qLens); $i++) {
     $w = explode('=', $qLens[$i]);
@@ -77,10 +84,7 @@ function main(){
         $ck = '';
     }
     $or .= "<option value='$qTime'$ck>$qLen</option>\n";
-#<input type='radio' class='radio-element' 
-# name='cpuTime' id='$qLen' value='$qTime' $ck
-# onChange='setCPUTime(\"$qLen\",\"$qTime\")'>
-#<label for='$qLen'> $qLen </label>";
+    #
   }
   $or .= "</select> time limit;\n";
   SA('cpu_time', '3:00:00',   $or, '');
@@ -133,9 +137,10 @@ function main(){
   #
   echo '<p id="message"></p>';
   echo "\n";
-  echo '<button type="button" onclick="checkSetup()">Check if OK</button>&nbsp;';
+  echo '<button id="check_button" type="button" onclick="checkSetup()">Check if OK</button>&nbsp;';
   echo "\n";
   echo '<button id="save_file_button" type="button" onclick="download()">Save it</button>';
+  echo "\n";
   #
 }
 #
@@ -299,7 +304,7 @@ function QSUB(){
 #<br>
 # ----------------Your Commands------------------- #<br>
 #<br>
-echo + `date` Job \$JOB_NAME started in queue \$QUEUE with jobID=\$JOB_ID on \$HOSTNAME<br>
+echo + `date` job \$JOB_NAME started in \$QUEUE with jobID=\$JOB_ID on \$HOSTNAME<br>
 <span id='parallel_info_params_span'></span>
 #<br>
 <span id='commands_value'></span>

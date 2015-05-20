@@ -1,0 +1,27 @@
+// lines starting w/ '//' are ignored, otherwise use <name> = <value>
+// slots or nCPU limits
+// overall
+nCPU:maxXX =  512
+nCPU:maxhC =   64
+nCPU:maxhM =   80
+// quotas per queue
+nCPU:sThC  =  100
+nCPU:mThC  =   64
+nCPU:lThC  =   32
+nCPU:uThC  =   16
+nCPU:sThM  =   32
+nCPU:mThM  =   16
+nCPU:lThM  =    8
+nCPU:uThM  =    4
+// memory thresholds
+mem:xxThr  =   1
+mem:hiThr  =   6
+// memory limits in GB
+mem:sThC   = 500
+mem:mThC   = 500
+mem:lThC   = 500
+mem:uThC   = 500
+mem:sThM   = 450
+mem:mThM   = 450
+mem:lThM   = 450
+mem:uThM   = 450
