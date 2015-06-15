@@ -40,7 +40,22 @@ pgi/15/mvapich       : MVAPICH 2.0 support for PGI compilers 15.1 for IB fabric
 pgi/15/openmpi       : OpenMPI 1.8.4 support for PGI compilers 15.1 for TCP fabric
 =:IDL use -rt=<procedure.sav>
 idl/rt               : IDL 6.1
-=:BioGenetics (these are for illustration only for now)
-bio/Trinity: Trinity ver 1.2.3
-bio/bioperl: BioPerl ver 2.3.4
-bio/MrBayes: MrBayes ver 3.4.5
+=:BioInformatics as of Jun 12 2015 
+bioinformatics/agalma/0.5.0:      Dependencies for use of Agalma 0.4.0
+bioinformatics/allpaths-lg/52415: Dependencies for use of Allpaths-LG
+bioinformatics/anaconda/2.2.0:    Dependencies for use of Agalma 0.4.0
+bioinformatics/bib/1.0:           Dependencies for use of Bioinformatics Brew, the bioinformatics package manager
+bioinformatics/bioperl/1.006924:  Dependencies for use of BioPerl v.1.006924
+bioinformatics/cutadapt/1.9.1:    Sets up the system to use CutAdapt
+bioinformatics/fastStructure/1.0: Dependencies for use of fastStructure 1.0
+bioinformatics/fastqc/0.10.1:     Dependencies for use of FastQC
+bioinformatics/masurca/3.0.1:     Dependencies for use of MaSuRCA 3.0.1
+bioinformatics/raxml/8.1:         System paths to run RAxML 8.1.16
+bioinformatics/structure/2.3.4:   Paths and java for Structure 2.3.4
+bioinformatics/trimgalore/0.4.0:  Dependencies for use of trimgalore, an automatic quality trimmer for Illumina data
+bioinformatics/trinity/2.0.6:     Dependencies for use of Trinity 2.0.6
+bioinformatics/velvet/1.2.10:     System paths for Velvet 1.2.10
+=:Java
+java/1.7.0_51        : Sets JAVA_HOME and the system paths for Java 1.7.0_51
+java/1.8.0_45        : Sets JAVA_HOME and the system paths for Java 1.8.0_45
+=:Last updated Jun 12 2015 - SGK

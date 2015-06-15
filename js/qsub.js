@@ -6,7 +6,7 @@ $(document).ready(function() {
         $(".modules_dropdown").select2({placeholder: 'select from the list, or start typing', 
                     formatSelection: formatModuleSelection, 
                     dropdownCssClass: 'smallmonodropdown'});
-        $('#js_version_number').html('JS ver 0.99/1.6');
+        $('#js_version_number').html('JS ver 1.1/4');
         $('#save_file_button').prop('disabled', true);
         showMsg('This page is ready!');
     });
@@ -193,7 +193,42 @@ function setAmount(ie) {
                 if (qMem == 'hM') {
                     opt = '-q '+whichQLen()+qMem+'.q ';
                 }
-                opt += flag+value+':00';
+                //
+                if (isValidCPUTime(value) == 1) {
+                    // need to convert D:H:M (my format) to H:M:S (SGE)
+                    // break in d,h,m around ':'
+                    var words = value.split(':');
+                    var nw    = words.length;
+                    //
+                    var t = 0;
+                    var h = 0;
+                    var m = 0;
+                    // convert to minutes
+                    switch (nw) {
+                    case 1:
+                        t = parseInt(value);
+                        break;
+                    case 2:
+                        t = parseInt(words[0])*60 + parseInt(words[1]);
+                        break;
+                    case 3:
+                        t = (parseInt(words[0])*24 + parseInt(words[1]))*60 + parseInt(words[2]);
+                        break;
+                    }
+                    // t -> h, m
+                    h = Math.floor(t/60);
+                    m = t-60*h;
+                    // h,m -> "H:MM:00"
+                    value = h.toString()+':';
+                    if (m < 10) {
+                        // add leading '0'
+                        value += '0'; 
+                    }
+                    value += m.toString()+':00';
+                } else {                    
+                    value += ' (*** invalid ***)';
+                }
+                opt += flag+value;
             }
             break;
         case 'nbr_cpu':
@@ -258,10 +293,11 @@ function addJobCommand(ie) {
     var id    = ie.id;
     var value = ie.value;
     var pname = ie.getAttribute('data-pname');
-    // replace \n -> '<br>'
-    value = value.replace(/\n/g, "\n<BR>")+'<BR>';
-    // replace ' ' by '&nbsp' to maintain layout/indentation
-    value = value.replace(/\ /g, "&nbsp;");
+    // by putting the command_value in a <pre></pre> 
+    // we only need to replace &,< by &amp; &lt; to prevent html parsing
+    // no need to add <br>'s
+    value = value.replace(/&/g, "&amp;");
+    value = value.replace(/</g, "&lt;");
     // 
     $('#'+pname).html(value); 
     // showMsg('debug: addJobCommand("'+pname+'")');
@@ -583,13 +619,33 @@ function checkSetup() {
 //
 // allows to save the qsub script to a file
 //
+// uses FileSave.js: git clone https://github.com/eligrey/FileSaver.js
+//
 function download() {
+    //
     // get the text only
     var output = $("#output").text();
     // remove any blank lines
     output = output.replace(/[\n]{2,}/g, '\n');
-    // save to a file (can't suggest a name)
-    window.open("data:plain/text;charset=utf-8," + escape(output));
+    //
+// // save to a file (can't suggest a name), THIS IS A HACK
+// // window.open("data:plain/text;charset=utf-8," + escape(output));
+// // escape() is deprecated, but this does not work (zero size file)
+// // window.open("data:plain/text;charset=utf-8," + encodeURI(output));
+    //
+    // use the job name to build the file name $jobName.job
+    var name = $('#job_name_input').val();
+    if (name.length == 0) {
+        // if no job name use qsub
+        name = 'qsub';
+    }
+    // add .job
+    name += '.job';
+    // convert output to a blob
+    var blob = new Blob([output], {type: "text/plain;charset=utf-8"});
+    // and save it on the client side
+    saveAs(blob, name);
+    //
     // disable the save button to force a check
     $('#save_file_button').prop('disabled', true);
 }
@@ -654,7 +710,7 @@ function doValidate(idname, value) {
             isValid = isValidName(value);
             break;
         case 'cpu_time_input':
-            name = 'amount of cpu time ([d]d:hh:mm, [h]h:mm, mmm or mm)';
+            name = 'amount of cpu time (DD:HH:MM up to 30 days)';
             isValid = isValidCPUTime(value);
             break;
         case 'memory_input':
@@ -683,22 +739,22 @@ function doValidate(idname, value) {
 }
 //
 function isValidCPUTime(value) {
-    // allow '12' '123' '1:00' '12:00' '1:00:00' or '12:00:00'
-    // This may not reject some weird time formats
     //
     var stat = 0;
     //
-    var re1 = /^[1-2][0-9]:[0-2][0-9]:[0-5][0-9]$/; // xx:xx:xx max 29:23:59 or ~30 days >> 30:00:00 of long
-    var re2 =      /^[1-9]:[0-2][0-9]:[0-5][0-9]$/; //  x:xx:xx max  9:23:59 or  ~10 days
-    var re3 =            /^[1-9][0-9]:[0-5][0-9]$/; //    xx:xx max    99:59 or ~100 hrs
-    var re4 =                 /^[1-9]:[0-5][0-9]$/; //     x:xx max     9:59 or  ~10 hrs
-    var re5 =                       /^[1-9][0-9]{1,2}$/; //  xx or xxx  min is 10, max 999 minutes  
+    var re1 =                         /^30:00:00$/; // 30:00:00 days == long
+    var re2 = /^[1-2][0-9]:[0-2][0-3]:[0-5][0-9]$/; // xx:xx:xx max 29:23:59 or  ~30 days
+    var re3 =      /^[1-9]:[0-2][0-3]:[0-5][0-9]$/; //  x:xx:xx max  9:23:59 or  ~10 days
+    var re4 =            /^[1-9][0-9]:[0-5][0-9]$/; //    xx:xx max    99:59 or ~100 hrs
+    var re5 =                 /^[1-9]:[0-5][0-9]$/; //     x:xx max     9:59 or  ~10 hrs
+    var re6 =                       /^[1-9][0-9]{1,2}$/; //  xx or xxx  min is 10, max 999 minutes  
     //
     if (re1.test(value) || 
         re2.test(value) || 
         re3.test(value) || 
         re4.test(value) || 
         re5.test(value) || 
+        re6.test(value) || 
         value == '-') {
         stat = 1;
     }
