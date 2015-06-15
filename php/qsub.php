@@ -7,14 +7,14 @@
    * to submit a job to SGE on hydra (R.6)
    *
    *
-   * <- Last updated: Wed May 20 11:53:33 2015 -> SGK
+   * <- Last updated: Fri Jun 12 17:06:09 2015 -> SGK
    **/
 error_reporting(E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 #
-$verNo = '0.99/1.6';
+$verNo = '1.1/1';
 # get the labels, flags and explanations from one external file
 #   ---\n is entry separator
 #   ==> is labels, flags and explanations separator
@@ -307,7 +307,7 @@ function QSUB(){
 echo + `date` job \$JOB_NAME started in \$QUEUE with jobID=\$JOB_ID on \$HOSTNAME<br>
 <span id='parallel_info_params_span'></span>
 #<br>
-<span id='commands_value'></span>
+<pre><span id='commands_value'></span></pre>
 #<br>
 echo = `date` job \$JOB_NAME done<br>
 </div>";

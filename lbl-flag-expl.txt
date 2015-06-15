@@ -3,9 +3,12 @@ This is the amount of CPU time your job needs to complete:<br>
 &bull; you can enter a time (any time limit) or <br>
 &bull; select a queue length (form the pull down menu).<p>
 The format is <tt>MM</tt>, <tt>MMM</tt>, <tt>H:MM</tt>, <tt>HH:MM</tt>,
-<tt>D:HH:MM</tt> or <tt>DD:HH:MM</tt>. <p>
-Hence the minimum is 10 minutes, while the maximum is set to 29:23:59 (almost
-30 days, <tt>lT</tt> queues). <p>
+<tt>D:HH:MM</tt> or <tt>DD:HH:MM</tt>. <br>
+This is <em>not</em> the format used by <tt>qsub</tt> which is either S or
+H:M:S (so s_cpu=H:M:S) 
+<p>
+Hence the minimum is 10 minutes, while the maximum is set to 30:00:00 
+(30 days, corresponding to the <tt>lTh?.q</tt> queues limit). <p>
 A value of "-" will direct the job to the unlimited queues: no time limit, but
 fewer slots.
 ---

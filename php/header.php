@@ -1,6 +1,6 @@
 <?php
 #
-# <- Last updated: Tue May 19 10:57:04 2015 -> SGK
+# <- Last updated: Fri Jun 12 18:32:24 2015 -> SGK
 #
 $s2VerNo = '3.5.2';
 echo '<!DOCTYPE html>
@@ -29,6 +29,7 @@ if ($s2VerNo != '') {
 }
 echo '
   <link href="css/qsub.css" rel="stylesheet" media="screen">
+  <script src="js/FileSaver.min.js"></script>
   <script src="js/qsub.js"></script>
 
   <title>QSub Generation Utility</title>
