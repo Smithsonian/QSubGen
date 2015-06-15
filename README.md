@@ -51,5 +51,5 @@ Jun 12 2015
   needed to translate < and & to &lt; and &amp; in the command section to
   appear OK and not be globbed/converted to html - are those the only two?
   use FileSave.js to save the file after converting to a blob.
-
+  updated module list
 
