@@ -48,7 +48,7 @@ Jun 12 2015
 
   fixed s_cpu=XXX specification (SSS or H:M:S) parsed from [[D:]H:]M
   fixed 30:00:00 (30d to be valid)
-  changed display of command to be inside a &lt;pre&gt; since \&amp;nbsp; --> ascii 240
+  changed display of command to be inside a &lt;pre&gt; since &amp;nbsp; --> ascii 240
   needed to translate \< and \& to &amp;lt; and &amp;amp; in the command section to
   appear OK and not be globbed/converted to html - are those the only two?
   use FileSave.js to save the file after converting to a blob.
