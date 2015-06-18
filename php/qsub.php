@@ -103,9 +103,9 @@ function main(){
   echo "</table></fieldset>\n";
   #
   H("Select the job's shell: ", 'shell_form', $Explanations['shell']);
-  RG('shell', 'bash', 'setShell', '/bin/bash', 0);
   RG('shell', 'sh',   'setShell', '/bin/sh',   0);
   RG('shell', 'csh',  'setShell', '/bin/csh',  0);
+  RG('shell', 'bash', 'setShell', '/bin/bash', 0);
   echo "</fieldset>\n";
   #
   H($Labels['add_modules'], 'add_modules', $Explanations['add_modules']);

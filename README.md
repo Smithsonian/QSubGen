@@ -53,4 +53,9 @@ Jun 12 2015
   appear OK and not be globbed/converted to html - are those the only two?
   use FileSave.js to save the file after converting to a blob.
   updated module list
+
+Jun 18 2015
+
+  changed the order of the shell options and changed the 'help' message in order to
+  encourage the use of sh instead of bash.
 </pre>

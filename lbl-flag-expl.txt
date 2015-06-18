@@ -43,7 +43,7 @@ in the hi-memory queues have 24, 64 or 80 cores (two, twelve, and two nodes
 respectively; with 512GB, 512GB and 1TB of total memory respectively).
 ---
 shell ==> ==>  ==> 
-The choice of shell determines the syntax you use for your commands.
+The choice of shell determines the syntax you use for your commands. Please note that we discourage the use of bash due to some strange behavior. We encourage the use of sh instead.
 ---
 other ==> ==> ==> 
 These are optional parameters.
