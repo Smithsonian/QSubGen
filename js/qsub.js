@@ -6,7 +6,7 @@ $(document).ready(function() {
         $(".modules_dropdown").select2({placeholder: 'select from the list, or start typing', 
                     formatSelection: formatModuleSelection, 
                     dropdownCssClass: 'smallmonodropdown'});
-        $('#js_version_number').html('JS ver 1.1/4');
+        $('#js_version_number').html('JS ver 1.1/5');
         $('#save_file_button').prop('disabled', true);
         showMsg('This page is ready!');
     });
@@ -336,6 +336,15 @@ function setPE(value, opt) {
 // callback for select shell radio group
 function setShell(value, opt) {
     // showMsg('debug: setShell("'+value+' '+opt+'")');
+    if (value == 'bash') {
+        var msg = 'FYI, when using "bash" instead of "sh" you will start a non-interactive bash shell.\n'+
+            'Check the bash man pages if this is indeed what you want, as some features (like\n'+
+            'aliases) are disabled when invoking bash in lieu of sh. As a result some features\n'+
+            'of the command module behaves differently.\n'+
+            'Unless you are an expert, we recommend that you stick to sh.';
+        alert(msg);
+    }
+
     $('#shell_bang').html(opt);
     setQsubParam('shell_type', '-S '+opt); 
 }

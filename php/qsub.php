@@ -7,14 +7,14 @@
    * to submit a job to SGE on hydra (R.6)
    *
    *
-   * <- Last updated: Fri Jun 12 17:06:09 2015 -> SGK
+   * <- Last updated: Thu Jun 18 09:45:18 2015 -> SGK
    **/
 error_reporting(E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 #
-$verNo = '1.1/1';
+$verNo = '1.1/2';
 # get the labels, flags and explanations from one external file
 #   ---\n is entry separator
 #   ==> is labels, flags and explanations separator
