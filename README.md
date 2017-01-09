@@ -1,3 +1,4 @@
+![QSubGen screenshot](QSubGen_screenshot.png)
 <pre>
 A qsub script generation utility for use on the Smithsonian Institution High
 Performance Cluster. 
