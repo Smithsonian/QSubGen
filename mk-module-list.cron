@@ -1,0 +1,2 @@
+# rebuild list of module if needed at 2:15 am
+15 2 * * * hpc /var/www/html/tools/QSubGen/mk-module-list.csh
