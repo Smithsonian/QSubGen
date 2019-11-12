@@ -1,9 +1,9 @@
 <?php
 #
-# <- Last updated: Wed May  6 14:24:02 2015 -> SGK
+# <- Last updated: Wed Oct 16 16:24:48 2019 -> SGK
 #
 echo "<div class='footer'>
-        <em>&copy;2015 Smithsonian Institution HPC - OCIO (SGK/PF)</em>
+        <em>&copy;2015-2019 Smithsonian Institution HPC - OCIO (SGK/PF)</em>
 <br>
 QSub generator 
 <span id='php_version_number'>PHP ver $verNo</span>

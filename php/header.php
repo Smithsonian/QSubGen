@@ -1,6 +1,6 @@
 <?php
 #
-# <- Last updated: Fri Jun 12 18:32:24 2015 -> SGK
+# <- Last updated: Wed Oct 16 16:23:23 2019 -> SGK
 #
 $s2VerNo = '3.5.2';
 echo '<!DOCTYPE html>
@@ -32,9 +32,9 @@ echo '
   <script src="js/FileSaver.min.js"></script>
   <script src="js/qsub.js"></script>
 
-  <title>QSub Generation Utility</title>
+  <title>QSub Generation Utility - Hydra-5</title>
  </head><body>
- <h1>QSub Generation Utility</h1>
+ <h1>QSub Generation Utility - Hydra-5</h1>
 ';
 
 ?>

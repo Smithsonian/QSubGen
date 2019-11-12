@@ -7,14 +7,14 @@
    * to submit a job to SGE on hydra (R.6)
    *
    *
-   * <- Last updated: Thu Jun 18 09:45:18 2015 -> SGK
+   * <- Last updated: Wed Oct 16 16:23:52 2019 -> SGK
    **/
 error_reporting(E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 #
-$verNo = '1.1/2';
+$verNo = '1.2/1';
 # get the labels, flags and explanations from one external file
 #   ---\n is entry separator
 #   ==> is labels, flags and explanations separator
@@ -43,8 +43,18 @@ for ($i = 0; $i < count($list); $i++) {
 #  =:text --> <optgroup label='text'>
 #  module : description
 $modules = explode("\n", file_get_contents('./module-avail.txt', true));
-$qOpts = explode("\n", file_get_contents('./quotas.txt', true));
-$qLens = explode(';', 'short=7:00;medium=1:12:00;long=30:00:00;unlimited=-;any=');
+$qOpts   = explode("\n", file_get_contents('./quotas.txt', true));
+$qLens   = explode(';', file_get_contents('./qlen.txt', true));
+#
+# this could be read from a .txt file
+#
+$SetCB   = array();
+$SetCB['goto_cwd']   = 1;
+$SetCB['join_err']   = 1;
+$SetCB['send_email'] = 0;
+#
+$Default = array();
+$Default['shell'] = 'sh';
 #
 main();
 #
@@ -54,7 +64,7 @@ function main(){
   #
   global $verNo;
   global $Explanations, $Flags, $Labels;
-  global $modules, $qOpts, $qLens;
+  global $modules, $qOpts, $qLens, $SetCB, $Default;
   #
   echo "<form autocomplete='off' class='form-horizontal' role='form'>\n";
   #
@@ -103,9 +113,12 @@ function main(){
   echo "</table></fieldset>\n";
   #
   H("Select the job's shell: ", 'shell_form', $Explanations['shell']);
-  RG('shell', 'sh',   'setShell', '/bin/sh',   0);
-  RG('shell', 'csh',  'setShell', '/bin/csh',  0);
-  RG('shell', 'bash', 'setShell', '/bin/bash', 0);
+  $shells = explode(' ', 'sh csh bash');
+  for ($i = 0; $i < count($shells); $i++) {
+    $shell = $shells[$i];
+    if ($Default['shell'] == $shell) { $check = 1; } else { $check = 0;}
+    RG('shell', $shell,   'setShell', '/bin/'.$shell, $check);
+  }
   echo "</fieldset>\n";
   #
   H($Labels['add_modules'], 'add_modules', $Explanations['add_modules']);
@@ -119,16 +132,20 @@ function main(){
   #
   H("Additional options: ", 'other',  $Explanations['other']);
   echo "<table>\n";
-  TI('job_name', 'example');
-  TI('log_name', 'example.log');
-  TI('err_name', 'example.err');
+  TI('job_name', 'example', '');
+  TI('log_name', 'example.log', '');
+  if ($SetCB['join_err']) { $disabled = ' disabled '; } else { $disabled = ''; }
+  TI('err_name', 'example.err', $disabled);
   echo "</table>\n";
+  echo "<table><tr><td>";
   CB('goto_cwd',   'setOther');
+  echo "</td><td>";
   CB('join_err',   'setOther');
-  echo "<br>\n";
+  echo "</td></tr><tr><td>";
   CB('send_email', 'setOther');
+  echo "</td></tr></table>\n";
   echo "<table>\n";
-  TI('email_add',  'user@location.edu');
+  TI('email_add',  'user@location.edu', '');
   echo "</table></fieldset></form>\n";
   #
   echo '<div class="container"><p>';
@@ -168,21 +185,33 @@ function RG ($rg, $name, $cmd, $opt, $ickd) {
 # checkbox input element
 function CB ($id, $cmd) {
   #
-  global $Explanations, $Flags, $Labels;
+  global $Explanations, $Flags, $Labels, $SetCB;
+  #
+  $ickd = $SetCB[$id];
+  if ($ickd == 1) {
+    $ck =' /checked';
+  } else {
+    $ck ='';
+  }
   #
   $name = $Labels[$id];
   $opt  = $Flags[$id];
+  $hint = $Explanations[$id];
   #
-  echo "
+  echo "<span class='cb-info'>
 <input type='checkbox' class='checkbox-element' 
- name='$name' id='$id' value='$name' 
+ name='$name' id='$id' value='$name' $ck
  onChange='$cmd(this,\"$opt\",\"$id\")'>
-<label for='$name'> $name </label> 
+<label for='$name'> $name ";
+  if ($hint != '') {
+    addToolTip($hint);
+  }
+echo "</label></span>
 ";
 }
 #
 # label+text input
-function TI($name, $default_value) {
+function TI($name, $default_value, $disabled) {
   #
   global $Explanations, $Flags, $Labels;
   #
@@ -196,6 +225,7 @@ function TI($name, $default_value) {
   echo "</label>";
   echo "</td>\n<td>";
   echo "<input type='text' class='form-control' id='".$name."_input' ".
+    $disabled.
     "placeholder='$default_value' data-pname='".$name."_value' \n".
     "data-flag='".$flag."' ".
     "onkeyup='addQsubParam(this);' onChange='validate(this)'> </td></tr>\n";
@@ -280,22 +310,37 @@ function SA($name, $default_value, $txt, $initVal) {
 #
 # generate the qsub script stub, 
 function QSUB(){
-  global $conf;
+  global $conf, $Flags, $SetCB, $Default;
+  $prefix = '#$ ';
   $div = "<legend>This the corresponding <tt>qsub</tt> script:</legend>\n";
   $div .= 
-    "<div id='output' class='qsub-script'># <span id='shell_bang'>/bin/csh</span><br> \n
+    "<div id='output' class='qsub-script'>".
+    "# <span id='shell_bang'>/bin/".$Default['shell']."</span><br> \n
 # ----------------Parameters---------------------- #<br>\n
 <span id='qsub_params_span'>
-<span id='shell_type'></span>
+<span id='shell_type'>".$prefix.' -S /bin/'.$Default['shell']."<br></span>
 <span id='pe_type'></span>
 <span id='cpu_time_value'></span>
 <span id='memory_value'></span>
-<span id='other_opts_goto_cwd'></span>
-<span id='other_opts_join_err'></span>
+<span id='other_opts_goto_cwd'>";
+  if ($SetCB['goto_cwd']) {
+    $div .= $prefix.$Flags['goto_cwd']."<br>";
+  }
+  $div .= "</span>
+<span id='other_opts_join_err'>";
+  if ($SetCB['join_err']) {
+    $div .= $prefix.$Flags['join_err']."<br>";
+    
+  }
+  $div .= "</span>
 <span id='job_name_value'></span>
 <span id='log_name_value'></span>
 <span id='err_name_value'></span>
-<span id='other_opts_send_email'></span>
+<span id='other_opts_send_email'>";
+  if ($SetCB['send_email']) {
+    $div .= $prefix.$Flags['send_email']."<br>";
+  }
+  $div .= "</span>
 <span id='email_add_value'></span>
 </span>
 #<br>

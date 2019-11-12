@@ -3,10 +3,11 @@
 // http://www.w3schools.com/jquery/jquery_get_started.asp
 //
 $(document).ready(function() {
+        setQLen('qLen');
         $(".modules_dropdown").select2({placeholder: 'select from the list, or start typing', 
                     formatSelection: formatModuleSelection, 
                     dropdownCssClass: 'smallmonodropdown'});
-        $('#js_version_number').html('JS ver 1.1/5');
+        $('#js_version_number').html('JS ver 1.2/1');
         $('#save_file_button').prop('disabled', true);
         showMsg('This page is ready!');
     });
@@ -174,20 +175,43 @@ function setAmount(ie) {
     } else {
         switch(name) {
         case 'memory':
-            opt = flag+value+'G';
+            var nCPU = $("#nbr_cpu_input").val();
+            var comma = '';
+            if (nCPU.length == 0) {
+                nCPU = 1;
+            }
+            var n = $('input[name=pe]:checked').length;
+            if (n == 0) {
+                petype = '?type?';
+            } else {
+                petype = $('input[name=pe]:checked').val();
+            }
+            if (petype == 'mthread') {
+                var totValue = value * nCPU;
+                opt = '-l '+flag+totValue+'G';
+                comma = ','
+            } else {
+                if (petype == 'serial') {
+                    var totValue = value;
+                    opt = '-l '+flag+totValue+'G';
+                    comma = ','
+                } else {
+                    comma = '-l ';
+                }
+            }
             if (value > xxMemThr()){
-                opt += ',h_data='+value+
-                    'G,h_vmem='+value+'G';
+                opt += comma+'h_data='+value+'G,h_vmem='+value+'G';
+                comma = ','
             }
             if (value > hiMemThr()) {
-                opt += ',himem';
+                opt += comma+'himem';
             }
             setQLen('qLen');
             setPEOpts(value > hiMemThr());
             break;           
         case 'cpu_time':
             if (value == '-') {
-                opt = '-q uT'+whichQMem()+'.q -l lowpri';
+                opt = '-q uT'+whichQMem()+'.q -l lopri';
             } else {
                 var qMem = whichQMem();
                 if (qMem == 'hM') {
@@ -240,10 +264,27 @@ function setAmount(ie) {
                 petype = $('input[name=pe]:checked').val();
             }
             opt = flag+' '+petype+' '+value;
+            //
+            // need to adjust memory reservation as well
+            var memory  = parseInt($('#memory_input').val());
+            var totMem = memory;
+            var memOpt = '-l h_data='+memory+'G,h_vmem='+memory+'G';
+            petype = $('input[name=pe]:checked').val();
+            if (petype == 'mthread') {
+                totMem = memory*value;
+                memOpt = '-l mres='+totMem+'G,h_data='+memory+'G,h_vmem='+memory+'G';
+            }
+            if (petype == 'serial') {
+                memOpt = '-l mres='+totMem+'G,h_data='+memory+'G,h_vmem='+memory+'G';
+            }
+            setQsubParam('memory_value', memOpt);
             break;
         }
     }
-    setQsubParam(pname, opt); 
+    if (opt != '') {
+        setQsubParam(pname, opt); 
+    }
+    //
     // var info = id+' '+value+' '+name;
     // showMsg('debug: setAmount("'+info+' '+opt+'")');
 }
@@ -285,7 +326,7 @@ function addQsubParam(ie) {
             $('#err_name_input').keyup();
         }
     }
-
+    // 
     // showMsg('debug: addQsubParam("'+opt+' -> '+pname+'")');
 }
 // call back for JC -> put job commands
@@ -316,7 +357,7 @@ function setPE(value, opt) {
         $('#nbr_cpu_input').prop('disabled', true);
         $('#parallel_info_params_span').html('');
     } else {
-        setQsubParam('pe_type', '-pe '+opt+ ' '+nCPU); 
+        setQsubParam('pe_type', '-pe '+opt+' '+nCPU); 
         $('#nbr_cpu_input').prop('disabled', false);
         var info = 'echo + NSLOTS = $NSLOTS';
         switch(opt) {
@@ -331,6 +372,29 @@ function setPE(value, opt) {
             break;
         }
         $('#parallel_info_params_span').html(info);
+    }
+    //* need to adjust memory reservation
+    var memory  = parseInt($('#memory_input').val());
+    petype = $('input[name=pe]:checked').val();
+    if (memory > xxMemThr()) {
+        var nCPU = $("#nbr_cpu_input").val();
+        if (nCPU.length == 0) {
+            nCPU = 1;
+        }
+        var memOpt = '-l h_data='+memory+'G,h_vmem='+memory+'G';
+        var totMem = memory;        
+        if (petype == 'mthread') {
+            totMem = memory*nCPU;
+            memOpt = '-l mres='+totMem+'G,h_data='+memory+'G,h_vmem='+memory+'G';
+        }
+        if (petype == 'serial') {
+            memOpt = '-l mres='+totMem+'G,h_data='+memory+'G,h_vmem='+memory+'G';
+        }
+        if (memory > hiMemThr()) {
+            memOpt += ',himem';
+        }
+        setQsubParam('memory_value', memOpt);
+        // showMsg('debug: setPE("memory_value '+memOpt+'")');
     }
 }
 // callback for select shell radio group
@@ -350,7 +414,7 @@ function setShell(value, opt) {
 }
 // callback for select other
 function setOther(ie, value, id) {
-    // showMsg('debug: setOther("'+value+'")');
+    // showMsg('debug: setOther("'+value+'", "'+id+'") checked='+ie.checked);
     if (ie.checked) {
         setQsubParam('other_opts_'+id, value); 
     } else {
@@ -384,7 +448,7 @@ function setQLen(name) {
         var qMem = whichQMem();
         var opt = '-q '+qLen+qMem+'.q';
         if (qLen == 'uT') {
-            opt += ' -l lowpri';
+            opt += ' -l lopri';
         }
         var pname = 'cpu_time_value';
         setQsubParam(pname, opt); 
@@ -398,7 +462,7 @@ function addModule(name) {
     var str = '';
     var i = 0;
     for (i = 0; i < list.length; i++) {
-        str += 'module load '+$(list[i]).val()+'<br>';
+        str += 'module load '+$(list[i]).val()+"<br>\n";
     }
     //
     var span_name = name+'_span';
@@ -650,10 +714,14 @@ function download() {
     }
     // add .job
     name += '.job';
-    // convert output to a blob
-    var blob = new Blob([output], {type: "text/plain;charset=utf-8"});
+    // convert output to a blob, 
+    // but use charset=ascii, not charset=utf-8, 
+    //   as the latter inserts a BOM (Byte Ordering Mark) and in particular 
+    //   the sequence \357 \273 \277 that indicates that UTF-8 is following
+    var blob = new Blob([output], {type: "text/plain;charset=ascii"});
     // and save it on the client side
-    saveAs(blob, name);
+    //   see https://github.com/eligrey/FileSaver.js/issues/432
+    saveAs(blob, name, true);
     //
     // disable the save button to force a check
     $('#save_file_button').prop('disabled', true);

@@ -6,3 +6,13 @@ May 20 2015
   * license option
 
 * fall back if CDN fails?, or just add the stuff 
+
+May  2 2016 
+
+  * abort button when selecting bash
+  * better handle of limits/quotas
+  * add the restricted queue?
+  
+Oct 16 2019
+
+  * modified for Hydra-5 (done)

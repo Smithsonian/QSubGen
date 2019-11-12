@@ -12,7 +12,7 @@ Hence the minimum is 10 minutes, while the maximum is set to 30:00:00
 A value of "-" will direct the job to the unlimited queues: no time limit, but
 fewer slots.
 ---
-memory ==> Memory ==> -l mres= ==>
+memory ==> Memory ==> mres= ==>
 This is the amount of memory <b>per CPU</b> your job will use (hence need).<p>
 
 The total amount of reserved memory will be  this amount <b>multiplied</b> by 
@@ -76,7 +76,18 @@ Enter here the commands for your job, you must follow the syntax of the
 selected shell.
 ---
 commands     ==> Type your commands here      ==>        ==> ---
-goto_cwd     ==> Change to cwd                ==> -cwd   ==> ---
-join_err     ==> Join stderr &amp; stdout     ==> -j y   ==> ---
-send_email   ==> Send email notifications     ==> -m abe ==> ---
+goto_cwd     ==> Change to CWD                ==> -cwd   ==> 
+When checked, a "cd" is executed to the <em>CWD</em> before the job is started,
+and the log (and err) file(s) will go to the <em>CWD</em>;
+<em>CWD</em> stands for the <u>c</u>urrent <u>w</u>orking
+<u>d</u>irectory, the location from where the job is submitted.
+---
+join_err     ==> Join output &amp; error files ==> -j y   ==> 
+When checked: both output and error messages will go in the same file,
+the log file. Uncheck it if you want to keep them separate.
+---
+send_email   ==> Send email notifications     ==> -m bea ==> 
+When checked: request that an email be send when the job <u>b</u>egins, <u>e</u>nds or
+<u>a</u>borts (-m bea), aka job status notification.
+---
 modules      ==> from this list               ==>        ==> 

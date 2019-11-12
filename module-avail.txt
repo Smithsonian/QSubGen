@@ -1,61 +1,326 @@
-=:GNU compilers
-gcc/4.4.7            : GNU compilers 4.4.7
-gcc/4.9.1            : GNU compilers 4.9.1
-gcc/4.9.2            : GNU compilers 4.9.2
-=:GNU MPI modules
-gcc/mpich            : MPICH2 1.4.1p1 for GNU compilers 4.4.7, for TCP fabric
-gcc/mvapich          : MVAPICH2 2.0 for GNU compilers 4.4.7, IB fabric only
-gcc/openmpi          : OpenMPI 1.8.4 for GNU compilers 4.4.7, for IB fabric
-gcc/openmpi+tcp      : OpenMPI 1.8.4 for GNU compilers 4.4.7, for TCP fabric
-gcc/4.4/mpich        : MPICH2 1.4.1p1 for GNU compilers 4.4.7, for TCP fabric
-gcc/4.4/mvapich      : MVAPICH2 2.0 for GNU compilers 4.4.7, IB fabric only
-gcc/4.4/openmpi      : OpenMPI 1.8.4 for GNU compilers 4.4.7, for IB fabric
-gcc/4.4/openmpi+tcp  : OpenMPI 1.8.4 for GNU compilers 4.4.7, for TCP fabric
-gcc/4.9/mpich        : MPICH 3.1.4 for GNU compilers 4.9.1, IB or TCP fabric
-gcc/4.9/mvapich      : MVAPICH2 2.1.rc2 for GNU compilers 4.9.1, for IB fabric
-gcc/4.9/openmpi      : OpenMPI 1.8.4 for GNU compilers 4.9.1, for IB fabric
-gcc/4.9/openmpi+tcp-4.9.1: OpenMPI 1.8.4 for GNU compilers 4.9.1, for TCP fabric
-gcc/4.9/openmpi+tcp-4.9.2: OpenMPI 1.8.4 for GNU compilers 4.9.2, for TCP fabric
-gcc/4.9/openmpi-4.9.1: OpenMPI 1.8.4 for GNU compilers 4.9.1, for IB fabric
-gcc/4.9/openmpi-4.9.2: OpenMPI 1.8.4 for GNU compilers 4.9.2, for IB fabric
-=:Intel compilers
-intel/2015           : Intel compilers version 2015
-=:Intel MPI modules
-intel/15/mpi         : MPI for Intel compilers 2015 for IB fabric
-intel/15/mpi+tcp     : MPI for Intel compilers 2015 for TCP fabric
-intel/mpi            : MPI for Intel compilers 2015 for IB fabric
-intel/mpi+tcp        : MPI for Intel compilers 2015 for TCP fabric
-=:PGI compilers
-pgi/14.10            : PGI Compilers 14.10
-pgi/15.1             : PGI Compilers 15.1
-=:PGI MPI modules
-pgi/mpich            : MPICH 3.1.3 support for PGI compilers 15.1 for TCP fabric
-pgi/mvapich          : MVAPICH 2.0 support for PGI compilers 15.1 for IB fabric
-pgi/openmpi          : OpenMPI 1.8.4 support for PGI compilers 15.1 for TCP fabric
-pgi/14/mpich         : MPICH 3.0.4 support for PGI compilers 14.10 for TCP fabric
-pgi/14/mvapich       : MVAPICH 1.9 support for PGI compilers 14.10 for IB fabric
-pgi/14/openmpi       : OpenMPI 1.7.3 support for PGI compilers 14.10 for TCP fabric
-pgi/15/mpich         : MPICH 3.1.3 support for PGI compilers 15.1 for TCP fabric
-pgi/15/mvapich       : MVAPICH 2.0 support for PGI compilers 15.1 for IB fabric
-pgi/15/openmpi       : OpenMPI 1.8.4 support for PGI compilers 15.1 for TCP fabric
-=:IDL use -rt=<procedure.sav>
-idl/rt               : IDL 6.1
-=:BioInformatics as of Jun 12 2015 
-bioinformatics/agalma/0.5.0:      Dependencies for use of Agalma 0.4.0
-bioinformatics/allpaths-lg/52415: Dependencies for use of Allpaths-LG
-bioinformatics/anaconda/2.2.0:    Dependencies for use of Agalma 0.4.0
-bioinformatics/bib/1.0:           Dependencies for use of Bioinformatics Brew, the bioinformatics package manager
-bioinformatics/bioperl/1.006924:  Dependencies for use of BioPerl v.1.006924
-bioinformatics/cutadapt/1.9.1:    Sets up the system to use CutAdapt
-bioinformatics/fastStructure/1.0: Dependencies for use of fastStructure 1.0
-bioinformatics/fastqc/0.10.1:     Dependencies for use of FastQC
-bioinformatics/masurca/3.0.1:     Dependencies for use of MaSuRCA 3.0.1
-bioinformatics/raxml/8.1:         System paths to run RAxML 8.1.16
-bioinformatics/structure/2.3.4:   Paths and java for Structure 2.3.4
-bioinformatics/trimgalore/0.4.0:  Dependencies for use of trimgalore, an automatic quality trimmer for Illumina data
-bioinformatics/trinity/2.0.6:     Dependencies for use of Trinity 2.0.6
-bioinformatics/velvet/1.2.10:     System paths for Velvet 1.2.10
+=:BioInformatics
+bioinformatics/R                   : System paths for R 3.6.1 - def. version, others may be avail.
+bioinformatics/admixture           : Dependencies for use of Admixture 1.3.0 - def. version, others may be avail.
+bioinformatics/angsd               : Dependencies for use of ANGSD 0.931 - def. version, others may be avail.
+bioinformatics/assembly_stats      : System paths to run assembly_stats 0.1.3 - def. version, others may be avail.
+bioinformatics/atram/2.0.1beta     : Dependencies for use of aTRAM 2.0.1beta
+bioinformatics/atram/2.0.2beta     : Dependencies for use of aTRAM 2.0.2beta
+bioinformatics/atram/2.0           : Dependencies for use of aTRAM 2.0
+bioinformatics/augustus            : Dependencies for use of Augustus 3.3.2 - def. version, others may be avail.
+bioinformatics/bbmap               : Dependencies for use of bbmap 38.67 - def. version, others may be avail.
+bioinformatics/bcftools            : System paths to run Bcftools 1.9 - def. version, others may be avail.
+bioinformatics/beagle              : Dependencies for use of BEAGLE 3.2 - def. version, others may be avail.
+bioinformatics/beast               : Dependencies for use of BEAST 2.6.1 - def. version, others may be avail.
+bioinformatics/bedtools            : System paths to run bedtools 2.28.0 - def. version, others may be avail.
+bioinformatics/bioawk              : System paths to run bioawk 1.0 - def. version, others may be avail.
+bioinformatics/bioperl             : Dependencies for use of BioPerl v.1.7.2 - def. version, others may be avail.
+bioinformatics/biopython           : Dependencies for use of BioPython 1.74 - def. version, others may be avail.
+bioinformatics/blasr               : System paths to run blasr 5.3.3 - def. version, others may be avail.
+bioinformatics/blast               : System paths to run blast+ 2.6.0 - def. version, others may be avail.
+bioinformatics/blast2go/1.3.3      : Dependencies for use of Blast2GO 1.3.3- SEE WIKI FOR USAGE
+bioinformatics/blat                : System paths to run blat 36 - def. version, others may be avail.
+bioinformatics/blobtools           : Dependencies for use of blobtools v1.0.1 - def. version, others may be avail.
+bioinformatics/bowtie2             : System paths to run Bowtie2 2.3.5 - def. version, others may be avail.
+bioinformatics/busco               : Dependencies for use of BUSCO 3.0.2 - def. version, others may be avail.
+bioinformatics/bwa                 : System paths to run BWA 0.7.17 - def. version, others may be avail.
+bioinformatics/cactus              : Dependencies for use of ProgressiveCactus 2019.03.01 - def. version, others may be avail.
+bioinformatics/canu                : Dependencies for use of canu 1.8 - def. version, others may be avail.
+bioinformatics/cd-hit/4.8.1        : Dependencies for use of cd-hit v4.8.1
+bioinformatics/cutadapt            : Sets up the system to use CutAdapt - def. version, others may be avail.
+bioinformatics/dotnet-core         : Dependencies for use of BioPython 1.74 - def. version, others may be avail.
+bioinformatics/fastqc              : Dependencies for use of FASTQC 0.11.8 - def. version, others may be avail.
+bioinformatics/gadma               : Dependencies for use of Gadma 1.0 - def. version, others may be avail.
+bioinformatics/gatb-minia-pipeline : Dependencies for use of gatb-minia-pipeline - def. version, others may be avail.
+bioinformatics/gatk                : Dependencies for use of gatk 3.8.1.0 - def. version, others may be avail.
+bioinformatics/gblocks             : System paths to run gblocks - def. version, others may be avail.
+bioinformatics/genomescope         : Dependencies for use of Genomescope - def. version, others may be avail.
+bioinformatics/getorganelle        : Dependencies for use of GetOrganelle 1.6.2d - def. version, others may be avail.
+bioinformatics/hmmer               : System paths to run hmmer 3.2.1 - def. version, others may be avail.
+bioinformatics/htslib              : System paths to use htslib - def. version, others may be avail.
+bioinformatics/hybpiper            : Dependencies for use of HybPiper 1.3 - def. version, others may be avail.
+bioinformatics/ipyrad              : Dependencies for use of pyrad 0.7.30 - def. version, others may be avail.
+bioinformatics/iqtree              : System paths to run IQTREE 1.6.12 - def. version, others may be avail.
+bioinformatics/jbrowse             : Dependencies for use of jbrowse 1.16.6 - def. version, others may be avail.
+bioinformatics/jellyfish           : System paths for Jellyfish 2.3.0 - def. version, others may be avail.
+bioinformatics/julia               : System paths for julia 1.2.0 - def. version, others may be avail.
+bioinformatics/mafft               : System paths for Mafft 7.407 - def. version, others may be avail.
+bioinformatics/maker               : Dependencies for use of MAKER 2.31.10 - def. version, others may be avail.
+bioinformatics/masurca             : Dependencies for use of MaSuRCA 3.3.3 - def. version, others may be avail.
+bioinformatics/metamorpheus        : Dependencies for use of MetaMorpheus 0.0.301 - def. version, others may be avail.
+bioinformatics/mrbayes             : System paths to run MrBayes 3.2.7a - def. version, others may be avail.
+bioinformatics/ngsadmix            : Dependencies for use of NGSadmix 32 - def. version, others may be avail.
+bioinformatics/oma/2.3.1           : Dependencies for use of OMA 2.3.1
+bioinformatics/orthomcl            : Dependencies for use of OrthoMCL 2.0.9 - def. version, others may be avail.
+bioinformatics/paml                : System paths to run PAML 4.9 - def. version, others may be avail.
+bioinformatics/partitionfinder     : Dependencies for use of partitionfinder 2.1.1 - def. version, others may be avail.
+bioinformatics/pbsuite             : System paths to run PBSuite 15.8.24 - def. version, others may be avail.
+bioinformatics/pcangsd             : Dependencies for use of pcangsd - def. version, others may be avail.
+bioinformatics/phast/1.5           : Dependencies for use of BioPython 1.74
+bioinformatics/phylobayes          : Dependencies for use of Phylobayes 4.1c - def. version, others may be avail.
+bioinformatics/phyluce             : Dependencies for use of Phyluce 1.6.7 - def. version, others may be avail.
+bioinformatics/picard-tools        : Dependencies for use of Picard Tools 2.20.6 - def. version, others may be avail.
+bioinformatics/pilon               : Dependencies for use of Pilon 1.23 - def. version, others may be avail.
+bioinformatics/plink               : Dependencies for use of plink 1.90b4 - def. version, others may be avail.
+bioinformatics/proteinortho        : Dependencies for use of Proteinortho 6.0.6 - def. version, others may be avail.
+bioinformatics/psmc                : System paths to run PSMC 0.6.5 - def. version, others may be avail.
+bioinformatics/qiime2              : Dependencies for use of Qiime2 2019.7 - def. version, others may be avail.
+bioinformatics/raxml               : System paths to run RAxML 8.2.12 - def. version, others may be avail.
+bioinformatics/repeatmasker        : System paths for RepeatMasker 4.0.9 - def. version, others may be avail.
+bioinformatics/repeatmodeler       : Dependencies for use of Repeatmodeler 1.0.11 - def. version, others may be avail.
+bioinformatics/revbayes            : Dependencies for use of revbayes 1.0.11 - def. version, others may be avail.
+bioinformatics/ruby                : Dependencies for use of ruby 2.6.3 - def. version, others may be avail.
+bioinformatics/samtools            : System paths for samtools 1.9 - def. version, others may be avail.
+bioinformatics/shapeit             : Dependencies for use of SHAPEIT 2.r837 & IMPUTE2 2.3.2 - def. version, others may be avail.
+bioinformatics/smc++               : Dependencies for use of smc++ 1.15.2 - def. version, others may be avail.
+bioinformatics/spades              : System paths for SPAdes 3.12.0 - def. version, others may be avail.
+bioinformatics/sratoolkit          : System paths to run the SRA toolkit v. 2.9.6 - def. version, others may be avail.
+bioinformatics/sspace              : System paths to run SSPACE 3.0 - def. version, others may be avail.
+bioinformatics/stacks              : System paths to run stacks 2.41 - def. version, others may be avail.
+bioinformatics/structure           : Paths and java for Structure 2.3.4 - def. version, others may be avail.
+bioinformatics/supernova           : System paths to run Supernova 2.1.1 - def. version, others may be avail.
+bioinformatics/transdecoder        : Dependencies and system paths for Transdecoder 5.5.0 - def. version, others may be avail.
+bioinformatics/trim_galore         : Dependencies for use of trimgalore, an automatic quality trimmer for Illumina data - def. version, others may be avail.
+bioinformatics/trimmomatic         : Dependencies for use of Trimmomatic 0.39 - def. version, others may be avail.
+bioinformatics/trinity             : Dependencies for use of Trinity 2.8.5 - def. version, others may be avail.
+bioinformatics/vcflib              : System paths to run vcflib 1.0.0-rc3 - def. version, others may be avail.
+bioinformatics/vcftools            : Dependencies for use of vcftools 0.1.16 - def. version, others may be avail.
 =:Java
-java/1.7.0_51        : Sets JAVA_HOME and the system paths for Java 1.7.0_51
-java/1.8.0_45        : Sets JAVA_HOME and the system paths for Java 1.8.0_45
-=:Last updated Jun 12 2015 - SGK
+java/1.8.0_45                      : Sets JAVA_HOME and the system paths for Java 1.8.0_45
+java/1.8                           : Sets JAVA_HOME and the system paths for Java 1.8.0_45
+=:Tools
+tools/R/3.2.1                      : System paths for R 3.2.1
+tools/R/3.4.1                      : System paths for R 3.4.1
+tools/cmake/3.3.1                  : System paths for cmake 3.3.1
+tools/dropbox_uploader/1.0         : System paths to run Dropbox Uploader
+tools/fl/0.79.47                   : FL 0.79.47
+tools/gdl                          : GDL 0.9.5 - def. version, others may be avail.
+tools/gnuparallel/20160422         : GNU Parallel 20160422
+tools/gv                           : access to gv (v3.7.4)
+tools/julia/1.0                    : access to Julia (v1.0.3)
+tools/local+                       : access to local tools use "module help tools/local+" for a list (v2.0/1)
+tools/local-bc                     : access to local tools, to be backward compatible with hydra-4
+tools/local                        : access to local tools use "module help tools/local" for a list (v2.0/2)
+tools/manpath                      : prepend MANPATH with ':'
+tools/mthread-numpy                : limit NUMPY multi-threading
+tools/pigz                         : System paths to run pigz 2.3.3 - def. version, others may be avail.
+tools/python-mthread-numpy         : limit NUMPY multi-threading
+tools/python-single-thread-numpy   : limit NUMPY to use a single thread
+tools/python/2.7                   : Dependencies for use of Python 2.7
+tools/python/3.7                   : Dependencies for use of Python 3.7
+tools/ruby/2.2.2                   : System paths for Ruby 2.2.2
+tools/scrubber                     : access to tools related to the scrubber use "module help tools/scrubber" for a list (v1.0/1)
+tools/single-thread-numpy          : limit NUMPY to use a single thread
+tools/ssd                          : access to tools related to the /ssd, use "module help tools/ssd" for a list (v1.0/1)
+tools/svn                          : svn 1.9.1 - def. version, others may be avail.
+=:IDL or MATLAB runtime
+idl/6.1                            : IDL 6.1
+idl/6.4                            : IDL 6.4
+idl/7.0                            : IDL 7.0
+idl/8.1                            : IDL 8.1
+idl/8.3                            : IDL 8.3
+idl/8.4                            : IDL 8.4
+idl/8.5                            : IDL 8.5.1
+idl/8.6                            : IDL 8.6.1
+idl/8.7.1                          : IDL 8.7.1
+idl/8.7.2                          : IDL 8.7.2
+idl/8.7                            : IDL 8.7.2
+idl/rt                             : IDL runtime 6.1
+matlab/R2014a                      : MATLAB run-time R2014b/v84
+matlab/R2017b0                     : MATLAB run-time R2017b0
+matlab/R2017b                      : MATLAB run-time R2017b
+matlab/R2019a                      : MATLAB run-time R2019a
+matlab/rt                          : MATLAB run-time R2019a
+=:GNU compilers
+gcc/4.8.5                          : GNU compilers (C/C++/Fortran) 4.8.5
+gcc/4.9.1                          : GNU compilers (C/C++/Fortran) 4.9.1
+gcc/4.9.2                          : GNU compilers (C/C++/Fortran) 4.9.2
+gcc/5.3.0                          : GNU compilers (C/C++/Fortran) 5.3.0
+gcc/6.1.0                          : GNU compilers (C/C++/Fortran) 6.1.0
+gcc/7.3.0                          : GNU compilers (C/C++/Fortran) 7.3.0
+gcc/8.2.0                          : adds GNU Cross Compilers to your environment variables
+gcc/9.2.0                          : GNU compilers (C/C++/Fortran) 9.2.0
+=:GNU MPI modules
+gcc/4.8/mpich-4.8.5                : MPICH 3.3.1 for GNU compilers 4.8.5, (API 3.1) IB or TCP fabric
+gcc/4.8/mpich-bcm                  : MPICH 3.3 for GNU compilers 4.8.5, (API 3.3) for TCP fabric
+gcc/4.8/mpich                      : MPICH 3.3.1 for GNU compilers 4.8.5, (API 3.1) IB or TCP fabric
+gcc/4.8/mvapich-4.8.5              : MVAPICH2 2.3.1 for GNU compilers 4.8.5, (API 3.2.1) for IB fabric
+gcc/4.8/mvapich-bcm                : MVAPICH2 2.3 for GNU compilers 4.8.5, (API 3.1) IB fabric only
+gcc/4.8/mvapich                    : MVAPICH2 2.3.1 for GNU compilers 4.8.5, (API 3.2.1) for IB fabric
+gcc/4.8/openmpi-4.8.5              : OpenMPI 4.0.1 for GNU compilers 4.8.5, (API 3.1.0) for IB fabric
+gcc/4.8/openmpi                    : OpenMPI 4.0.1 for GNU compilers 4.8.5, (API 3.1.0) for IB fabric
+gcc/4.9/mpich-4.9.1                : MPICH 3.3.1 for GNU compilers 4.9.1, (API 3.1) IB or TCP fabric
+gcc/4.9/mpich-4.9.2                : MPICH 3.3.1 for GNU compilers 4.9.2, (API 3.1) IB or TCP fabric
+gcc/4.9/mpich                      : MPICH 3.3.1 for GNU compilers 4.9.2, (API 3.1) IB or TCP fabric
+gcc/4.9/mvapich-4.9.1              : MVAPICH2 2.3.1 for GNU compilers 4.9.1, (API 3.2.1) for IB fabric
+gcc/4.9/mvapich-4.9.2              : MVAPICH2 2.3.1 for GNU compilers 4.9.2, (API 3.2.1) for IB fabric
+gcc/4.9/mvapich                    : MVAPICH2 2.3.1 for GNU compilers 4.9.2, (API 3.2.1) for IB fabric
+gcc/4.9/openmpi-4.9.1              : OpenMPI 4.0.1 for GNU compilers 4.9.1, (API 3.1.0) for IB fabric
+gcc/4.9/openmpi-4.9.2              : OpenMPI 4.0.1 for GNU compilers 4.9.2, (API 3.1.0) for IB fabric
+gcc/4.9/openmpi                    : OpenMPI 4.0.1 for GNU compilers 4.9.2, (API 3.1.0) for IB fabric
+gcc/5.3/mpich-5.3.0                : MPICH 3.3.1 for GNU compilers 5.3.0, (API 3.1) IB or TCP fabric
+gcc/5.3/mpich                      : MPICH 3.3.1 for GNU compilers 5.3.0, (API 3.1) IB or TCP fabric
+gcc/5.3/mvapich-5.3.0              : MVAPICH2 2.3.1 for GNU compilers 5.3.0, (API 3.2.1) for IB fabric
+gcc/5.3/mvapich                    : MVAPICH2 2.3.1 for GNU compilers 5.3.0, (API 3.2.1) for IB fabric
+gcc/5.3/openmpi-5.3.0              : OpenMPI 4.0.1 for GNU compilers 5.3.0, (API 3.1.0) for IB fabric
+gcc/5.3/openmpi                    : OpenMPI 4.0.1 for GNU compilers 5.3.0, (API 3.1.0) for IB fabric
+gcc/6.1/mpich-6.1.0                : MPICH 3.3.1 for GNU compilers 6.1.0, (API 3.1) IB or TCP fabric
+gcc/6.1/mpich                      : MPICH 3.3.1 for GNU compilers 6.1.0, (API 3.1) IB or TCP fabric
+gcc/6.1/mvapich-6.1.0              : MVAPICH2 2.3.1 for GNU compilers 6.1.0, (API 3.2.1) for IB fabric
+gcc/6.1/mvapich                    : MVAPICH2 2.3.1 for GNU compilers 6.1.0, (API 3.2.1) for IB fabric
+gcc/6.1/openmpi-6.1.0              : OpenMPI 4.0.1 for GNU compilers 6.1.0, (API 3.1.0) for IB fabric
+gcc/6.1/openmpi                    : OpenMPI 4.0.1 for GNU compilers 6.1.0, (API 3.1.0) for IB fabric
+gcc/7.3/mpich-7.3.0                : MPICH 3.3.1 for GNU compilers 7.3.0, (API 3.1) IB or TCP fabric
+gcc/7.3/mpich                      : MPICH 3.3.1 for GNU compilers 7.3.0, (API 3.1) IB or TCP fabric
+gcc/7.3/mvapich-7.3.0              : MVAPICH2 2.3.1 for GNU compilers 7.3.0, (API 3.2.1) for IB fabric
+gcc/7.3/mvapich                    : MVAPICH2 2.3.1 for GNU compilers 7.3.0, (API 3.2.1) for IB fabric
+gcc/7.3/openmpi-7.3.0              : OpenMPI 4.0.1 for GNU compilers 7.3.0, (API 3.1.0) for IB fabric
+gcc/7.3/openmpi                    : OpenMPI 4.0.1 for GNU compilers 7.3.0, (API 3.1.0) for IB fabric
+gcc/8.2/mpich-8.2.0                : MPICH 3.3.1 for GNU compilers 8.2.0, (API 3.1) IB or TCP fabric
+gcc/8.2/mpich                      : MPICH 3.3.1 for GNU compilers 8.2.0, (API 3.1) IB or TCP fabric
+gcc/8.2/mvapich-8.2.0              : MVAPICH2 2.3.1 for GNU compilers 8.2.0, (API 3.2.1) for IB fabric
+gcc/8.2/mvapich                    : MVAPICH2 2.3.1 for GNU compilers 8.2.0, (API 3.2.1) for IB fabric
+gcc/8.2/openmpi-8.2.0              : OpenMPI 4.0.1 for GNU compilers 8.2.0, (API 3.1.0) for IB fabric
+gcc/8.2/openmpi                    : OpenMPI 4.0.1 for GNU compilers 8.2.0, (API 3.1.0) for IB fabric
+gcc/9.2/mvapich-9.2.0              : MVAPICH2 2.3.1 for GNU compilers 9.2.0, (API 3.2.1) for IB fabric
+gcc/9.2/mvapich                    : MVAPICH2 2.3.1 for GNU compilers 9.2.0, (API 3.2.1) for IB fabric
+gcc/9.2/openmpi-9.2.0              : OpenMPI 4.0.1 for GNU compilers 9.2.0, (API 3.1.0) for IB fabric
+gcc/9.2/openmpi                    : OpenMPI 4.0.1 for GNU compilers 9.2.0, (API 3.1.0) for IB fabric
+=:Intel compilers
+intel/2015.1                       : Intel compilers (C/C++/Fortran) version 2015.1.133
+intel/2015.5                       : Intel compilers (C/C++/Fortran) version 2015.5.223
+intel/2015                         : Intel compilers (C/C++/Fortran) version 2015 (latest)
+intel/2016.0                       : Intel compilers (C/C++/Fortran) version 2016.0.109
+intel/2016.3                       : Intel compilers (C/C++/Fortran) version 2016.3.210
+intel/2016                         : Intel compilers (C/C++/Fortran) version 2016 (latest)
+intel/2017.1                       : Intel compilers (C/C++/Fortran) version 2017.1.132
+intel/2017.2                       : Intel compilers (C/C++/Fortran) version 2017.2.174
+intel/2017                         : Intel compilers (C/C++/Fortran) version 2017 (latest)
+intel/2018.1                       : Intel compilers (C/C++/Fortran) version 2018.1.163
+intel/2018                         : Intel compilers (C/C++/Fortran) version 2018 (latest)
+intel/2019.4                       : Intel compilers (C/C++/Fortran) version 2019.4.243
+intel/2019.5                       : Intel compilers (C/C++/Fortran) version 2019.5.281
+intel/2019                         : Intel compilers (C/C++/Fortran) version 2019
+=:Intel MPI modules
+intel/18/mpi-18.1                  : MPI for Intel warning
+intel/18/mpi                       : MPI for Intel warning
+intel/18/mvapich-18.1              : MVAPICH2 2.3.1 for GNU compilers 2018.1, (API 3.2.1) for IB fabric
+intel/18/openmpi-18.1              : OpenMPI 4.0.1 for GNU compilers 2018.1, (API 3.1.0) for IB fabric
+intel/19/mpi+tcp                   : MPI for Intel compilers 2019.4 (2019.4.243) for TCP/IP fabric
+intel/19/mpi-19.4                  : MPI for Intel compilers 2019.4 (2019.4.243) for IB fabric
+intel/19/mpi-19.5                  : MPI for Intel compilers 2019.5 (2019.5.281) for IB fabric
+intel/19/mpi                       : MPI for Intel compilers 2019.4 (2019.4.243) for IB fabric
+intel/19/mvapich-19.4              : MVAPICH 2.3.1 support for Intel compilers 2019.4 (API 3.1.4) for IB fabric
+intel/19/mvapich-19.5              : MVAPICH 2.3.1 support for Intel compilers 2019.5 (API 3.1.4) for IB fabric
+intel/19/mvapich                   : MVAPICH 2.3.1 support for Intel compilers 2019.5 (API 3.1.4) for IB fabric
+intel/19/openmpi-19.4              : OpenMPI 4.0.1 for GNU compilers 2019.4, (API 3.1.0) for IB fabric
+intel/19/openmpi-19.5              : OpenMPI 4.0.1 for GNU compilers 2019.5, (API 3.1.0) for IB fabric
+intel/mpi                          : MPI for Intel warning
+=:PGI compilers
+pgi/16.10                          : PGI Compilers (for linux86-64) 16.10
+pgi/16.4                           : PGI Compilers (for linux86-64) 16.4
+pgi/17.10                          : PGI Compilers (for linux86-64) 17.10
+pgi/17.1                           : PGI Compilers (for linux86-64) 17.1
+pgi/18.1                           : PGI Compilers (for linux86-64) 18.1
+pgi/18.7                           : PGI Compilers (for linux86-64) 18.7
+pgi/19.5                           : Changes the PGI home directory to linux86-64-llvm 19.5
+pgi/19.9                           : Changes the PGI home directory to linux86-64-llvm 19.9
+=:PGI MPI modules
+pgi/16/mpich-16.10                 : MPICH 3.2 support for PGI compilers 16.10 (API 3.2) for TCP fabric
+pgi/16/mpich-16.4                  : MPICH 3.2 support for PGI compilers 16.4 (API 3.2) for TCP fabric
+pgi/16/mpich                       : MPICH 3.2 support for PGI compilers 16.10 (API 3.2) for TCP fabric
+pgi/16/mvapich-16.10               : MVAPICH 2.1 support for PGI compilers 16.10 (API 3.1.4) for IB fabric
+pgi/16/mvapich-16.4                : MVAPICH 2.1 support for PGI compilers 16.4 (API 3.1.4) for IB fabric
+pgi/16/mvapich                     : MVAPICH 2.1 support for PGI compilers 16.10 (API 3.1.4) for IB fabric
+pgi/16/openmpi-16.10               : OpenMPI 1.10.1 support for PGI compilers 16.10 (API 3.0) for TCP fabric
+pgi/16/openmpi-16.4                : OpenMPI 1.10.1 support for PGI compilers 16.4 (API 3.0) for TCP fabric
+pgi/16/openmpi                     : OpenMPI 1.10.1 support for PGI compilers 16.10 (API 3.0) for TCP fabric
+pgi/17/mpich-17.10                 : MPICH 3.2 support for PGI compilers 17.10 (API 3.2) for TCP fabric
+pgi/17/mpich-17.1                  : MPICH 3.2 support for PGI compilers 17.1 (API 3.2) for TCP fabric
+pgi/17/mpich                       : MPICH 3.2 support for PGI compilers 17.10 (API 3.2) for TCP fabric
+pgi/17/mvapich-17.10               : MVAPICH 2.3.1 support for PGI compilers 17.10 (API 3.1.4) for IB fabric
+pgi/17/mvapich-17.1                : MVAPICH 2.3.1 support for PGI compilers 17.1 (API 3.1.4) for IB fabric
+pgi/17/mvapich                     : MVAPICH 2.3.1 support for PGI compilers 17.10 (API 3.1.4) for IB fabric
+pgi/17/openmpi-17.10               : OpenMPI 1.10.1 support for PGI compilers 17.10 (API 3.0) for TCP fabric
+pgi/17/openmpi-17.1                : OpenMPI 1.10.1 support for PGI compilers 17.1 (API 3.0) for TCP fabric
+pgi/17/openmpi4-17.10              : OpenMPI 1.10.1 support for PGI compilers 17.10 (API 4.0.1) for TCP fabric
+pgi/17/openmpi4-17.1               : OpenMPI 1.10.1 support for PGI compilers 17.1 (API 4.0.1) for TCP fabric
+pgi/17/openmpi                     : OpenMPI 1.10.1 support for PGI compilers 17.10 (API 3.0) for TCP fabric
+pgi/18/mpich-18.1                  : MPICH 3.2.1 support for PGI compilers 18.1 (API 3.2) for TCP fabric
+pgi/18/mpich-18.7                  : MPICH 3.2.1 support for PGI compilers 18.7 (API 3.2) for TCP fabric
+pgi/18/mpich                       : MPICH 3.2.1 support for PGI compilers 18.7 (API 3.2) for TCP fabric
+pgi/18/mvapich-18.1                : MVAPICH 2.3.1 support for PGI compilers 18.1 (API 3.1.4) for IB fabric
+pgi/18/mvapich-18.7                : MVAPICH 2.3.1 support for PGI compilers 18.7 (API 3.1.4) for IB fabric
+pgi/18/mvapich                     : MVAPICH 2.3.1 support for PGI compilers 18.7 (API 3.1.4) for IB fabric
+pgi/18/openmpi-18.1                : OpenMPI 1.10.1 support for PGI compilers 18.1 (API 3.0) for TCP fabric
+pgi/18/openmpi-18.7                : OpenMPI 1.10.1 support for PGI compilers 18.7 (API 3.0) for TCP fabric
+pgi/18/openmpi4-18.1               : OpenMPI 1.10.1 support for PGI compilers 18.1 (API 4.0.1) for TCP fabric
+pgi/18/openmpi4-18.7               : OpenMPI 1.10.1 support for PGI compilers 18.7 (API 4.0.1) for TCP fabric
+pgi/18/openmpi                     : OpenMPI 1.10.1 support for PGI compilers 18.7 (API 3.0) for TCP fabric
+pgi/19/mpich-19.5                  : MPICH 3.3.1 support for PGI compilers 19.5 (API 3.3) for TCP fabric
+pgi/19/mpich                       : MPICH 3.3.1 support for PGI compilers 19.5 (API 3.3) for TCP fabric
+pgi/19/mvapich-19.5                : MVAPICH 2.3.1 support for PGI compilers 19.5 (API 3.1.4) for IB fabric
+pgi/19/mvapich-19.9                : MVAPICH 2.3.1 support for PGI compilers 19.9 (API 3.1.4) for IB fabric
+pgi/19/mvapich                     : MVAPICH 2.3.1 support for PGI compilers 19.9 (API 3.1.4) for IB fabric
+pgi/19/openmpi-19.5                : OpenMPI 1.10.1 support for PGI compilers 19.5 (API 3.1.3) for TCP fabric
+pgi/19/openmpi-19.9                : OpenMPI 1.10.1 support for PGI compilers 19.5 (API 3.1.3) for TCP fabric
+pgi/19/openmpi-pgi-19.5            : OpenMPI 1.10.1 support for PGI compilers 19.5 (API 3.1.3) for TCP fabric
+pgi/19/openmpi-pgi-19.9            : OpenMPI 1.10.1 support for PGI compilers 19.5 (API 3.1.3) for TCP fabric
+pgi/19/openmpi3-19.5               : OpenMPI 1.10.1 support for PGI compilers 19.5 (API 3.1.3) for TCP fabric
+pgi/19/openmpi4-19.5               : OpenMPI 1.10.1 support for PGI compilers 19.5 (API 4.0.1) for TCP fabric
+pgi/19/openmpi4-19.9               : OpenMPI 1.10.1 support for PGI compilers 19.9 (API 4.0.1) for TCP fabric
+pgi/19/openmpi4                    : OpenMPI 1.10.1 support for PGI compilers 19.9 (API 4.0.1) for TCP fabric
+pgi/19/openmpi                     : OpenMPI 1.10.1 support for PGI compilers 19.5 (API 3.1.3) for TCP fabric
+pgi/mpich                          : MPICH 3.2.1 support for PGI compilers 18.7 (API 3.2) for TCP fabric
+pgi/mvapich                        : MVAPICH 2.3.1 support for PGI compilers 18.7 (API 3.1.4) for IB fabric
+pgi/openmpi                        : OpenMPI 1.10.1 support for PGI compilers 18.7 (API 3.0) for TCP fabric
+=:Misc modules
+blacs/openmpi/gcc/64/1.1patch03    : adds Blacs to your environment variables
+cuda10.0/blas/10.0.130             : adds CUDA 10.0 BLAS libraries to your environment variables
+cuda10.0/fft/10.0.130              : adds CUDA 10.0  FFT libraries to your environment variables
+cuda10.0/nsight/10.0.130           : adds NVIDIA CUDA 10.0 Visual Profiler to your environment variables
+cuda10.0/profiler/10.0.130         : adds NVIDIA CUDA 10.0 Visual Profiler to your environment variables
+cuda10.0/toolkit/10.0.130          : adds NVIDIA CUDA 10.0 Toolkit to your environment variables
+cuda80/blas/8.0.61                 : adds CUDA 8.0 BLAS libraries to your environment variables
+cuda80/fft/8.0.61                  : adds CUDA 8.0  FFT libraries to your environment variables
+cuda80/nsight/8.0.61               : adds NVIDIA CUDA 8.0 Visual Profiler to your environment variables
+cuda80/profiler/8.0.61             : adds NVIDIA CUDA 8.0 Visual Profiler to your environment variables
+cuda80/toolkit/8.0.61              : adds NVIDIA CUDA 8.0 Toolkit to your environment variables
+cuda90/blas/9.0.176                : adds CUDA 9.0 BLAS libraries to your environment variables
+cuda90/fft/9.0.176                 : adds CUDA 9.0  FFT libraries to your environment variables
+cuda90/nsight/9.0.176              : adds NVIDIA CUDA 9.0 Visual Profiler to your environment variables
+cuda90/profiler/9.0.176            : adds NVIDIA CUDA 9.0 Visual Profiler to your environment variables
+cuda90/toolkit/9.0.176             : adds NVIDIA CUDA 9.0 Toolkit to your environment variables
+cuda92/blas/9.2.88                 : adds CUDA 9.2 BLAS libraries to your environment variables
+cuda92/fft/9.2.88                  : adds CUDA 9.2  FFT libraries to your environment variables
+cuda92/nsight/9.2.88               : adds NVIDIA CUDA 9.2 Visual Profiler to your environment variables
+cuda92/profiler/9.2.88             : adds NVIDIA CUDA 9.2 Visual Profiler to your environment variables
+cuda92/toolkit/9.2.88              : adds NVIDIA CUDA 9.2 Toolkit to your environment variables
+gis/gdal/2.0.2                     : Dependencies for use of GDAL 2.0.2
+gis/proj/4.9.2                     : Dependencies for use of PROJ 4.9.2
+gis/rgdal/1.1-10                   : Dependencies for use of rgdal 1.1-10
+gnuplot/5.0.1                      : GnuPlot 5.0.1
+gsl/1.16                           : Dependencies for use of GSL 1.16
+hdf5/1.10.1                        : adds HDF5 to your environment variables
+hdf5_18/1.8.20                     : adds HDF5 to your environment variables
+intel-tbb-oss/ia32/2019_20190410oss: adds Intel TBB libraries to your environment variables
+intel-tbb-oss/intel64/2019_20190410oss: adds Intel TBB libraries to your environment variables
+intel/python/27-19.5               : Dependencies for use of Intel's distribution of Python 2.7.16
+intel/python/27                    : Dependencies for use of Intel's distribution of Python 2.7.16
+intel/python/36-19.5               : Dependencies for use of Intel's distribution of Python 3.6.9
+intel/python/36                    : Dependencies for use of Intel's distribution of Python 3.6.9
+lapack/gcc/64/3.8.0                : Adds LAPACK library for GCC 64 bits to your environment.
+mmfs/1_0                           : Adds gpfs to your environment
+mpich/ge/gcc/64/3.3                : adds MPICH-gcc to your environment variables
+mvapich2/gcc/64/2.3                : adds MVAPICH2-gcc to your environment variables
+netcdf/gcc/64/4.6.1                : Adds NetCDF to your environment
+nvidia/cuda/7.5                    : CUDA 7.5
+nvidia/cuda/9.0                    : CUDA 9.0
+nvidia/cuda/9.1                    : CUDA 9.1
+nvidia/gdk/352.79                  : GDK 352.79
+nvidia/nvsmi/352.39                : NVSMI 352.39
+nvidia/pynvlm                      : PYNVLM 7.352.0
+openblas/dynamic/0.2.20            : adds OpenBLAS libraries to your environment variables
+openmpi/gcc/64/1.10.7              : adds OpenMPI to your environment variables
+python2/                           : Python is a programming language that lets you work more quickly and integrate your systems more effectively. 
+scalapack/openmpi/gcc/64/2.0.2     : adds Scalapack to your environment variables
+=:Module list last updated as of Sat Nov  9 2019 at 02:15
