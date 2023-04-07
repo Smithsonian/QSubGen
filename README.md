@@ -3,10 +3,16 @@
 A qsub script generation utility for use on the Smithsonian Institution High
 Performance Cluster. 
 
-This is version 1.2/1 (PHP/JS) - adjusted for Hydra-5
+This is version 1.2/3 (PHP/JS) - adjusted for Hydra-6
 
-Status:
-
+Nov  3 2021 
+  * add '/' in isValidName() in js/qsub.js
+Sep 14 2021
+  * modified for Hydra-6
+  * updated quotas.txt
+  * fixed missing himem if -pe mthread in js/qsub.js
+Oct 16 2019
+  * modified for Hydra-5
 Nov 12 2019 
    * changed the code to be Hydra-5 compatible 
      memory reservation is per job, no longer per slots.

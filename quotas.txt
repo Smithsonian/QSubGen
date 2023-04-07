@@ -1,27 +1,36 @@
 // lines starting w/ '//' are ignored, otherwise use <name> = <value>
-// slots or nCPU limits
-// overall
-nCPU:maxXX = 3928
-nCPU:maxhC = 64
-nCPU:maxhM = 40
-// quotas per queue
-nCPU:sThC = 864
-nCPU:mThC = 610
-nCPU:lThC = 288
-nCPU:uThC = 96
-nCPU:sThM = 250
-nCPU:mThM = 125
-nCPU:lThM = 64
-nCPU:uThM = 15
+//
+// <- Last updated: Tue Sep 14 16:41:22 2021 -> SGK
+//
 // memory thresholds
+// threshold above which need to reserve memory
 mem:xxThr = 1
-mem:hiThr = 6
+//                 which need the hiMem queue
+mem:hiThr = 8
+// slots or nCPU limits
+//   overall
+//   see slots in qconf -srqs and qconf -sq
+nCPU:maxXX = 4864
+nCPU:maxhC = 112
+nCPU:maxhM = 128
+// quotas per queue
+//   see hiCPU_u_slots in qconf -srqs and u_slots
+nCPU:sThC = 640
+nCPU:mThC = 640
+nCPU:lThC = 338
+nCPU:uThC = 112
+//   see hiMem_u_slots in qconf -srqs and u_slots
+nCPU:sThM = 590
+nCPU:mThM = 223
+nCPU:lThM = 148
+nCPU:uThM = 27
 // memory limits in GB
-mem:sThC = 5709
-mem:mThC = 5709
-mem:lThC = 5709
-mem:uThC = 5709
-mem:sThM = 2330
-mem:mThM = 2330
-mem:lThM = 2330
-mem:uThM = 2330
+//   see  of u_mem_res in qconf -srqs
+mem:sThC = 6953
+mem:mThC = 6953
+mem:lThC = 6953
+mem:uThC = 6953
+mem:sThM = 3620
+mem:mThM = 3620
+mem:lThM = 3620
+mem:uThM = 3620

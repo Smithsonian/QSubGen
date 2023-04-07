@@ -3,13 +3,13 @@
 // http://www.w3schools.com/jquery/jquery_get_started.asp
 //
 $(document).ready(function() {
+        $('#js_version_number').html('JS ver 1.2/3');
+        $('#save_file_button').prop('disabled', true);
+        showMsg('This page is ready!');
         setQLen('qLen');
         $(".modules_dropdown").select2({placeholder: 'select from the list, or start typing', 
                     formatSelection: formatModuleSelection, 
                     dropdownCssClass: 'smallmonodropdown'});
-        $('#js_version_number').html('JS ver 1.2/1');
-        $('#save_file_button').prop('disabled', true);
-        showMsg('This page is ready!');
     });
 // show a message in the #message label usefull for debugging
 function showMsg(text) {
@@ -277,7 +277,11 @@ function setAmount(ie) {
             if (petype == 'serial') {
                 memOpt = '-l mres='+totMem+'G,h_data='+memory+'G,h_vmem='+memory+'G';
             }
+            if (memory > hiMemThr()) {
+                memOpt += ',himem';
+            }
             setQsubParam('memory_value', memOpt);
+            // showMsg('debug: setPE("memory_value '+memOpt+'")');
             break;
         }
     }
@@ -437,10 +441,12 @@ function setQLen(name) {
     var list = $( "#"+name+" option:selected" );
     var qTime = list.val();
     //
-    // showMsg('debug: setQLen("'+qTime+'")');
-    if (qTime == '') {
-        $('#cpu_time_input').keyup();
+    // showMsg('debug: >>'+name+'|'+qTime+'<<');
+    //
+    if (qTime == 'any') {
+        $('#cpu_time_input').val('1:00:00');
         $('#cpu_time_input').prop('disabled', false);
+        $('#cpu_time_input').keyup();
     } else {
         $('#cpu_time_input').val(qTime);
         $('#cpu_time_input').prop('disabled', true);
@@ -590,19 +596,26 @@ function checkSetup() {
     // quotas/limits
     var nCPUMax   = quotaValues('nCPU');
     var totMemMax = quotaValues('memory');
-    var qName = whichQLen()+whichQMem()+'.q';
+    var qLen = whichQLen();
+    var qMem = whichQMem();
+    var qName = qLen+qMem+'.q';
     //
     totMem = nCPU*memory;
     //
-    if (nCPU > nCPUMax) {
-        error++;
-        msg += '  ERR: You have specified '+nCPU+
-            ' CPUs: this exceeds the per user quota of '+nCPUMax+' CPUs in "'+qName+'".\n';
-    }
-    if (totMem > totMemMax) {
-        error++;
-        msg += '  ERR: You have specified '+totMem+
-            ' GB of total memory: this exceeds the per user quota of '+totMemMax+' GB in "'+qName+'".\n';
+    if (qLen == 'aT') {
+        warning++;
+        msg += '  WARN: no quota check when using "any" time limits\n';
+    } else {
+        if (nCPU > nCPUMax) {
+            error++;
+            msg += '  ERR: You have specified '+nCPU+
+                ' CPUs: this exceeds the per user quota of '+nCPUMax+' CPUs in "'+qName+'".\n';
+        }
+        if (totMem > totMemMax) {
+            error++;
+            msg += '  ERR: You have specified '+totMem+
+                ' GB of total memory: this exceeds the per user quota of '+totMemMax+' GB in "'+qName+'".\n';
+        }
     }
     //
     // can't use him and MPI
@@ -868,7 +881,7 @@ function isValidFloat(value, min, max) {
 //
 function isValidName(value) {
     var stat = 0;
-    var re = /^[a-zA-Z0-9.+=%@_:\-]*$/;
+    var re = /^[a-zA-Z0-9.+=%@_:\/\-]*$/;
     if (re.test(value)) {
         stat = 1;
     }

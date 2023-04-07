@@ -1,8 +1,10 @@
 <?php
 #
-# <- Last updated: Wed Oct 16 16:23:23 2019 -> SGK
+# <- Last updated: Tue Sep 14 17:06:58 2021 -> SGK
 #
+# cdn version of select2
 $s2VerNo = '3.5.2';
+#
 echo '<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -32,9 +34,9 @@ echo '
   <script src="js/FileSaver.min.js"></script>
   <script src="js/qsub.js"></script>
 
-  <title>QSub Generation Utility - Hydra-5</title>
+  <title>QSub Generation Utility - Hydra-6</title>
  </head><body>
- <h1>QSub Generation Utility - Hydra-5</h1>
+ <h1>QSub Generation Utility - Hydra-6</h1>
 ';
 
 ?>

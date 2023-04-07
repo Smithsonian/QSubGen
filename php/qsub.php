@@ -6,15 +6,15 @@
    * this php/js set helps users to write embedded directives
    * to submit a job to SGE on hydra (R.6)
    *
+   * <- Last updated: Tue Sep 14 16:16:04 2021 -> SGK
    *
-   * <- Last updated: Wed Oct 16 16:23:52 2019 -> SGK
    **/
 error_reporting(E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 #
-$verNo = '1.2/1';
+$verNo = '1.2/3';
 # get the labels, flags and explanations from one external file
 #   ---\n is entry separator
 #   ==> is labels, flags and explanations separator
@@ -44,7 +44,9 @@ for ($i = 0; $i < count($list); $i++) {
 #  module : description
 $modules = explode("\n", file_get_contents('./module-avail.txt', true));
 $qOpts   = explode("\n", file_get_contents('./quotas.txt', true));
-$qLens   = explode(';', file_get_contents('./qlen.txt', true));
+$text    = file_get_contents('./qlen.txt', true);
+$text   = substr_replace($text ,"", -1);
+$qLens   = explode(';', $text);
 #
 # this could be read from a .txt file
 #
